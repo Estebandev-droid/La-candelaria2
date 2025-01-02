@@ -45,6 +45,13 @@ const Menu = ({ toggleMenu, isMenuOpen }) => {
                         >
                             <i className="fas fa-plus mr-2"></i> Crear Producto
                         </Link>
+                        <Link
+                            to="/product-list"
+                            onClick={toggleMenu}
+                            className="block py-2 px-4 rounded hover:bg-gray-700 transition"
+                        >
+                            <i className="fas fa-list mr-2"></i> Lista de Productos
+                        </Link>
                     </>
                 ) : (
                     <Link

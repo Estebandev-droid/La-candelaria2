@@ -7,7 +7,7 @@ const Header = ({ toggleMenu, isMenuOpen }) => {
     const { user, logout } = useContext(AuthContext);
 
     return (
-        <header className={`bg-gradient-to-r from-blue-500 to-purple-500 p-4 shadow-lg ${isMenuOpen ? 'ml-64' : ''} transition-all duration-300`}>
+        <header className={`bg-gradient-to-r from-blue-500 to-purple-500 p-4 shadow-lg transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
             <div className="container mx-auto flex justify-between items-center">
                 <h1 className="text-3xl font-extrabold text-white">
                     <i className="fas fa-shopping-cart mr-2"></i>

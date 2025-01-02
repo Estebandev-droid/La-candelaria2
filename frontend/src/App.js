@@ -5,6 +5,8 @@ import Login from './components/Login';
 import Cart from './pages/Cart';
 import ProductDetails from './pages/ProductDetails';
 import ProductForm from './pages/ProductForm';
+import ProductList from './pages/ProductList';
+import EditProduct from './pages/EditProduct';
 
 function App() {
   return (
@@ -16,7 +18,8 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/create-product" element={<ProductForm />} />
-          <Route path="/edit-product/:id" element={<ProductForm />} />
+          <Route path="/edit-product/:id" element={<EditProduct />} />
+          <Route path="/product-list" element={<ProductList />} />
         </Routes>
       </div>
     </Router>

@@ -45,11 +45,23 @@ const Home = () => {
             <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
             <Menu toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
+            <main className="container mx-auto p-6 mt-16">
+                <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                    Bienvenido a Mi Tienda
+                </h1>
+                <p className="mt-4 text-center text-lg text-gray-300">
+                    Encuentra los mejores productos aquí.
+                </p>
+                {/* Aquí puedes agregar más contenido de la página de inicio */}
+            </main>
+
             {/* Carrousel / Banner */}
             <div className="relative w-full h-64 bg-gradient-to-r from-purple-500 to-indigo-500">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url("/images/banner.jpg")' }}></div>
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <h2 className="text-white text-3xl sm:text-5xl font-bold text-center">¡Descubre nuestras promociones!</h2>
+                    <h2 className="text-white text-4xl sm:text-5xl font-extrabold text-center drop-shadow-lg">
+                        ¡Descubre nuestras promociones exclusivas!
+                    </h2>
                 </div>
             </div>
 
@@ -58,15 +70,15 @@ const Home = () => {
                 <input
                     type="text"
                     placeholder="Buscar productos..."
-                    className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-purple-500 shadow-md placeholder-gray-400"
                     onChange={(e) => handleSearch(e.target.value)}
                 />
             </div>
 
             {/* Productos destacados */}
             <div className="container mx-auto p-6">
-                <h3 className="text-2xl font-bold mt-8">Productos destacados</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+                <h3 className="text-3xl font-bold mb-4 text-indigo-300">Productos destacados</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {featuredProducts.map((product) => (
                         <div
                             key={product._id}
@@ -76,17 +88,17 @@ const Home = () => {
                                 <img
                                     src={product.imageUrl}
                                     alt={product.name}
-                                    className="w-full h-48 object-cover"
+                                    className="w-full h-48 object-cover hover:opacity-90 transition"
                                 />
                             </Link>
                             <div className="p-4">
-                                <h2 className="text-xl font-semibold">{product.name}</h2>
-                                <p className="text-gray-400">{product.description}</p>
-                                <p className="text-lg font-bold text-indigo-400">${product.price}</p>
-                                <div className="flex items-center mt-4 space-x-4">
+                                <h2 className="text-xl font-semibold text-purple-400">{product.name}</h2>
+                                <p className="text-gray-400 text-sm">{product.description}</p>
+                                <p className="text-lg font-bold text-indigo-400 mt-2">${product.price}</p>
+                                <div className="mt-4 flex items-center">
                                     <button
                                         onClick={() => addToCart(product, 1)}
-                                        className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition"
+                                        className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg hover:opacity-90 transition"
                                     >
                                         Agregar al carrito
                                     </button>
@@ -99,8 +111,8 @@ const Home = () => {
 
             {/* Nuevos productos */}
             <div className="container mx-auto p-6">
-                <h3 className="text-2xl font-bold mt-8">Nuevos productos</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+                <h3 className="text-3xl font-bold mb-4 text-purple-300">Nuevos productos</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {newProducts.map((product) => (
                         <div
                             key={product._id}
@@ -110,17 +122,17 @@ const Home = () => {
                                 <img
                                     src={product.imageUrl}
                                     alt={product.name}
-                                    className="w-full h-48 object-cover"
+                                    className="w-full h-48 object-cover hover:opacity-90 transition"
                                 />
                             </Link>
                             <div className="p-4">
-                                <h2 className="text-xl font-semibold">{product.name}</h2>
-                                <p className="text-gray-400">{product.description}</p>
-                                <p className="text-lg font-bold text-indigo-400">${product.price}</p>
-                                <div className="flex items-center mt-4 space-x-4">
+                                <h2 className="text-xl font-semibold text-purple-400">{product.name}</h2>
+                                <p className="text-gray-400 text-sm">{product.description}</p>
+                                <p className="text-lg font-bold text-indigo-400 mt-2">${product.price}</p>
+                                <div className="mt-4 flex items-center">
                                     <button
                                         onClick={() => addToCart(product, 1)}
-                                        className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition"
+                                        className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg hover:opacity-90 transition"
                                     >
                                         Agregar al carrito
                                     </button>
@@ -133,25 +145,26 @@ const Home = () => {
 
             {/* Botón flotante */}
             <button
-                className="fixed bottom-4 right-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-4 rounded-full shadow-lg"
+                className="fixed bottom-4 right-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform"
                 onClick={() => window.location.href = '/cart'}
             >
                 <i className="fas fa-shopping-cart text-2xl"></i>
             </button>
 
             {/* Footer */}
-            <footer className="bg-gray-800 text-white mt-12 p-4">
+            <footer className="mt-16 p-4 bg-gray-800 text-center">
                 <div className="flex justify-center space-x-4">
-                    <a href="https://facebook.com" target="_blank" rel="noreferrer">
-                        <i className="fab fa-facebook text-xl"></i>
-                    </a>
-                    <a href="https://twitter.com" target="_blank" rel="noreferrer">
-                        <i className="fab fa-twitter text-xl"></i>
-                    </a>
-                    <a href="https://instagram.com" target="_blank" rel="noreferrer">
-                        <i className="fab fa-instagram text-xl"></i>
+                    <a
+                        href="https://wa.me/1234567890"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center space-x-2 text-green-400 hover:text-green-500 transition"
+                    >
+                        <i className="fab fa-whatsapp text-3xl"></i>
+                        <span className="text-lg font-medium">Contáctanos por WhatsApp</span>
                     </a>
                 </div>
+                <div className="mt-4 text-center text-sm text-gray-500">&copy; 2025 Tu Tienda. Todos los derechos reservados.</div>
             </footer>
         </div>
     );
