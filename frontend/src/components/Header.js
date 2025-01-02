@@ -9,10 +9,10 @@ const Header = ({ toggleMenu, isMenuOpen }) => {
     return (
         <header className={`bg-gradient-to-r from-blue-500 to-purple-500 p-4 shadow-lg transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
             <div className="container mx-auto flex justify-between items-center">
-                <h1 className="text-3xl font-extrabold text-white">
+                <Link to="/" className="text-3xl font-extrabold text-white flex items-center">
                     <i className="fas fa-shopping-cart mr-2"></i>
                     La Candelaria
-                </h1>
+                </Link>
                 <div className="flex items-center space-x-4">
                     {user ? (
                         <>

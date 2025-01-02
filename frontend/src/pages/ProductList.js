@@ -47,25 +47,29 @@ const ProductList = () => {
                         Crear Producto
                     </Link>
                 </div>
-                <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products.map(product => (
-                        <div key={product._id} className="rounded-lg shadow-lg bg-gray-800 p-4">
-                            <Link to={`/product/${product._id}`}>
-                                <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover rounded-lg" />
-                            </Link>
-                            <h2 className="text-xl font-semibold text-purple-400 mt-4">{product.name}</h2>
-                            <p className="text-gray-400 text-sm">{product.description}</p>
-                            <p className="text-lg font-bold text-indigo-400 mt-2">${product.price}</p>
-                            <div className="mt-4 flex justify-between items-center">
-                                <Link to={`/edit-product/${product._id}`} className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg hover:opacity-90 transition">
-                                    Editar
-                                </Link>
-                                <button onClick={() => deleteProduct(product._id)} className="px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:opacity-90 transition">
-                                    Eliminar
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                <div className="mt-8">
+                    <ul className="space-y-4">
+                        {products.map(product => (
+                            <li key={product._id} className="bg-gray-800 p-4 rounded-lg shadow-lg flex items-center justify-between">
+                                <div className="flex items-center space-x-4">
+                                    <img src={product.imageUrl} alt={product.name} className="w-16 h-16 object-cover rounded-lg" />
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-purple-400">{product.name}</h2>
+                                        <p className="text-gray-400 text-sm">{product.description}</p>
+                                        <p className="text-lg font-bold text-indigo-400 mt-2">${product.price}</p>
+                                    </div>
+                                </div>
+                                <div className="flex space-x-4">
+                                    <Link to={`/edit-product/${product._id}`} className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg hover:opacity-90 transition">
+                                        Editar
+                                    </Link>
+                                    <button onClick={() => deleteProduct(product._id)} className="px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:opacity-90 transition">
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </main>
         </div>
