@@ -10,8 +10,8 @@ const Cart = () => {
     if (!isAuthenticated) {
         return (
             <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white flex items-center justify-center">
-                <h1 className="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                    Debes estar logueado para ver el carrito
+                <h1 className="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500">
+                    Inicia sesión para acceder a tu carrito
                 </h1>
             </div>
         );
@@ -27,44 +27,48 @@ const Cart = () => {
         <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
             <Header />
             <div className="container mx-auto p-6 mt-16">
-                <h1 className="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                    Carrito de Compras
+                <h1 className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500">
+                    Tu Carrito de Compras
                 </h1>
                 {cart.length === 0 ? (
-                    <p className="text-center mt-8">Tu carrito está vacío.</p>
+                    <p className="text-center mt-12 text-lg">No tienes productos en tu carrito. ¡Explora nuestras ofertas y agrega tus favoritos!</p>
                 ) : (
-                    <div className="mt-8">
+                    <div className="mt-10 space-y-6">
                         {cart.map((item) => (
-                            <div key={item.product._id} className="flex items-center justify-between p-4 bg-gray-800 rounded-lg shadow-lg mb-4">
-                                <div className="flex items-center">
-                                    <img src={item.product.imageUrl} alt={item.product.name} className="w-16 h-16 object-cover rounded-lg mr-4" />
+                            <div key={item.product._id} className="flex flex-col md:flex-row items-center justify-between bg-gray-800 p-6 rounded-lg shadow-md">
+                                <div className="flex items-center space-x-6">
+                                    <img
+                                        src={item.product.imageUrl}
+                                        alt={item.product.name}
+                                        className="w-20 h-20 object-cover rounded-lg shadow-md"
+                                    />
                                     <div>
-                                        <h2 className="text-xl font-semibold">{item.product.name}</h2>
-                                        <div className="flex items-center mt-2">
-                                            <label className="text-gray-400 mr-2">Cantidad:</label>
-                                            <input
-                                                type="number"
-                                                value={item.quantity}
-                                                onChange={(e) => handleQuantityChange(item.product._id, parseInt(e.target.value))}
-                                                className="w-16 px-2 py-1 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
-                                                min="1"
-                                            />
-                                        </div>
-                                        <p className="text-lg font-bold text-indigo-400 mt-2">${item.product.price}</p>
+                                        <h2 className="text-2xl font-semibold text-teal-300">{item.product.name}</h2>
+                                        <p className="text-gray-400 text-sm mt-2">Cantidad:</p>
+                                        <input
+                                            type="number"
+                                            value={item.quantity}
+                                            onChange={(e) => handleQuantityChange(item.product._id, parseInt(e.target.value))}
+                                            className="w-16 px-2 py-1 mt-1 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-center"
+                                            min="1"
+                                        />
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => removeFromCart(item.product._id)}
-                                    className="px-4 py-2 bg-red-500 rounded-lg font-medium hover:opacity-90 transition"
-                                >
-                                    Eliminar
-                                </button>
+                                <div className="mt-4 md:mt-0 md:text-right">
+                                    <p className="text-xl font-bold text-teal-400">${item.product.price}</p>
+                                    <button
+                                        onClick={() => removeFromCart(item.product._id)}
+                                        className="mt-4 px-4 py-2 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg font-medium hover:opacity-90 transition"
+                                    >
+                                        Eliminar
+                                    </button>
+                                </div>
                             </div>
                         ))}
-                        <div className="flex justify-end mt-8">
+                        <div className="text-right">
                             <button
                                 onClick={clearCart}
-                                className="px-4 py-2 bg-red-500 rounded-lg font-medium hover:opacity-90 transition"
+                                className="px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg font-bold hover:opacity-90 transition"
                             >
                                 Vaciar Carrito
                             </button>
