@@ -3,7 +3,8 @@ import axios from 'axios';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
                         },
                     });
                     setUser(response.data);
+                    setIsAuthenticated(true);
                 }
             } catch (error) {
                 console.error('Error al obtener el usuario:', error);
@@ -31,6 +33,7 @@ export const AuthProvider = ({ children }) => {
             const response = await axios.post('/api/users/login', { username, password });
             localStorage.setItem('token', response.data.token);
             setUser(response.data);
+            setIsAuthenticated(true);
             return response.data;
         } catch (error) {
             throw new Error('Error al iniciar sesión. Verifica tus credenciales.');
@@ -40,11 +43,15 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         localStorage.removeItem('token');
         setUser(null);
+        setIsAuthenticated(false);
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+export { AuthProvider };
+export default AuthProvider;

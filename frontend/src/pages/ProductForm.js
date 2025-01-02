@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import Header from '../components/Header';
+import { getProductById, createProduct, updateProduct } from '../services/productService';
+import { AuthContext } from '../context/AuthContext';
 
 const ProductForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { isAuthenticated } = useContext(AuthContext);
     const [product, setProduct] = useState({
         name: '',
         description: '',
@@ -14,13 +16,14 @@ const ProductForm = () => {
         featured: false,
         isNewProduct: false,
     });
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         if (id) {
             const fetchProduct = async () => {
                 try {
-                    const response = await axios.get(`/api/products/${id}`);
-                    setProduct(response.data);
+                    const productData = await getProductById(id);
+                    setProduct(productData);
                 } catch (error) {
                     console.error('Error al obtener el producto:', error);
                 }
@@ -47,27 +50,24 @@ const ProductForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('name', product.name);
-        formData.append('description', product.description);
-        formData.append('price', product.price);
-        if (product.image) formData.append('image', product.image);
-        formData.append('featured', product.featured);
-        formData.append('isNewProduct', product.isNewProduct);
-
+        if (!isAuthenticated) {
+            setMessage('Debes estar logueado para crear un producto.');
+            return;
+        }
         try {
             if (id) {
-                await axios.put(`/api/products/${id}`, formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                });
+                await updateProduct(id, product);
+                setMessage('Producto actualizado con éxito.');
             } else {
-                await axios.post('/api/products', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                });
+                await createProduct(product);
+                setMessage('Producto creado con éxito.');
             }
-            navigate('/');
+            setTimeout(() => {
+                navigate('/');
+            }, 2000); // Redirigir después de 2 segundos
         } catch (error) {
             console.error('Error al guardar el producto:', error);
+            setMessage('Error al guardar el producto.');
         }
     };
 
@@ -79,6 +79,7 @@ const ProductForm = () => {
                     <h1 className="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
                         {id ? 'Editar Producto' : 'Crear Producto'}
                     </h1>
+                    {message && <p className="text-center text-green-500">{message}</p>}
                     <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-300">Nombre</label>
