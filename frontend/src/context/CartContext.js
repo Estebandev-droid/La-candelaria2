@@ -24,12 +24,20 @@ export const CartProvider = ({ children }) => {
         setCart(cart.filter((item) => item.product._id !== productId));
     };
 
+    const updateQuantity = (productId, quantity) => {
+        setCart(cart.map((item) =>
+            item.product._id === productId
+                ? { ...item, quantity }
+                : item
+        ));
+    };
+
     const clearCart = () => {
         setCart([]);
     };
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}>
             {children}
         </CartContext.Provider>
     );

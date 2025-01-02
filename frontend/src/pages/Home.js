@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { CartContext } from '../context/CartContext';
+import { AuthContext } from '../context/AuthContext';
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 import { Link } from 'react-router-dom';
@@ -11,7 +12,9 @@ const Home = () => {
     const [newProducts, setNewProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [message, setMessage] = useState('');
     const { addToCart } = useContext(CartContext);
+    const { user } = useContext(AuthContext);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -22,7 +25,7 @@ const Home = () => {
             const response = await axios.get('/api/products');
             setProducts(response.data);
             setFeaturedProducts(response.data.filter(product => product.featured));
-            setNewProducts(response.data.filter(product => product.isNew));
+            setNewProducts(response.data.filter(product => product.isNewProduct));
         } catch (error) {
             console.error('Error al obtener los productos:', error);
         }
@@ -36,6 +39,21 @@ const Home = () => {
         setSearchTerm(term);
     };
 
+    const handleAddToCart = (product) => {
+        if (!user) {
+            setMessage('Debes estar logueado para agregar productos al carrito');
+            setTimeout(() => {
+                setMessage('');
+            }, 2000);
+            return;
+        }
+        addToCart(product, 1);
+        setMessage('Producto agregado al carrito');
+        setTimeout(() => {
+            setMessage('');
+        }, 2000); // Ocultar el mensaje después de 2 segundos
+    };
+
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -45,13 +63,18 @@ const Home = () => {
             <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
             <Menu toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
-            <main className="container mx-auto p-6 mt-16">
+            <main className={`container mx-auto p-6 mt-16 transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
                 <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
                     Bienvenido a Mi Tienda
                 </h1>
                 <p className="mt-4 text-center text-lg text-gray-300">
                     Encuentra los mejores productos aquí.
                 </p>
+                {message && (
+                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300">
+                        {message}
+                    </div>
+                )}
                 {/* Aquí puedes agregar más contenido de la página de inicio */}
             </main>
 
@@ -97,7 +120,7 @@ const Home = () => {
                                 <p className="text-lg font-bold text-indigo-400 mt-2">${product.price}</p>
                                 <div className="mt-4 flex items-center">
                                     <button
-                                        onClick={() => addToCart(product, 1)}
+                                        onClick={() => handleAddToCart(product)}
                                         className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg hover:opacity-90 transition"
                                     >
                                         Agregar al carrito
@@ -131,7 +154,7 @@ const Home = () => {
                                 <p className="text-lg font-bold text-indigo-400 mt-2">${product.price}</p>
                                 <div className="mt-4 flex items-center">
                                     <button
-                                        onClick={() => addToCart(product, 1)}
+                                        onClick={() => handleAddToCart(product)}
                                         className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-medium rounded-lg hover:opacity-90 transition"
                                     >
                                         Agregar al carrito
@@ -144,12 +167,12 @@ const Home = () => {
             </div>
 
             {/* Botón flotante */}
-            <button
+            <Link
+                to="/cart"
                 className="fixed bottom-4 right-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform"
-                onClick={() => window.location.href = '/cart'}
             >
                 <i className="fas fa-shopping-cart text-2xl"></i>
-            </button>
+            </Link>
 
             {/* Footer */}
             <footer className="mt-16 p-4 bg-gray-800 text-center">
