@@ -12,15 +12,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    @apply text-blue-500 hover:text-blue-700;
+    @apply text-green-500 hover:text-green-700;
 }
 
 .btn {
-    @apply bg-blue-500 text-white font-semibold py-2 px-4 rounded;
+    @apply bg-green-500 text-white font-semibold py-2 px-4 rounded;
 }
 
 .btn:hover {
-    @apply bg-blue-700;
+    @apply bg-green-700;
 }
 
 .card {
@@ -28,7 +28,7 @@ a {
 }
 
 .header {
-    @apply bg-blue-600 text-white p-4;
+    @apply bg-red-600 text-white p-4;
 }
 
 .footer {
@@ -36,7 +36,7 @@ a {
 }
 
 .form-input {
-    @apply mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500;
 }
 
 .form-label {
@@ -44,9 +44,9 @@ a {
 }
 
 .form-button {
-    @apply w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-4 rounded-lg hover:scale-105 transition-transform;
+    @apply w-full bg-gradient-to-r from-green-500 to-red-500 text-white font-bold py-2 px-4 rounded-lg hover:scale-105 transition-transform;
 }
 
 .form-link {
-    @apply text-blue-500 cursor-pointer;
+    @apply text-red-500 cursor-pointer;
 }

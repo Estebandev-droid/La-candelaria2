@@ -55,11 +55,11 @@ const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-red-900 via-red-800 to-green-900">
             <form 
                 onSubmit={mode === 'login' ? handleLogin : mode === 'register' ? handleRegister : handleForgotPassword} 
                 className="bg-white/10 backdrop-blur-lg p-8 rounded-xl shadow-2xl w-96 transform transition-all duration-500 hover:scale-105">
-                <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 mb-6 text-center">
+                <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-green-600 mb-6 text-center">
                     {mode === 'login' ? 'Iniciar Sesión' : mode === 'register' ? 'Registrar Usuario' : 'Recuperar Contraseña'}
                 </h2>
                 {error && <p className="text-red-500 font-semibold text-sm mb-4">{error}</p>}
@@ -70,7 +70,7 @@ const Login = () => {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
+                            className="mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500 pl-10"
                             placeholder="Ingresa tu usuario"
                             required
                         />
@@ -84,7 +84,7 @@ const Login = () => {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 pl-10"
+                            className="mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500 pl-10"
                             placeholder="Ingresa tu correo"
                             required
                         />
@@ -111,10 +111,10 @@ const Login = () => {
                             checked={rememberUser}
                             onChange={(e) => setRememberUser(e.target.checked)}
                         />
-                        <span className="text-sm text-purple-500 ml-2">Recordar usuario</span>
+                        <span className="text-sm text-green-500 ml-2">Recordar usuario</span>
                     </div>
                 )}
-                <button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-4 rounded-lg hover:scale-105 transition-transform">
+                <button type="submit" className="w-full bg-gradient-to-r from-red-500 to-green-500 text-white font-bold py-2 px-4 rounded-lg hover:scale-105 transition-transform">
                     {mode === 'login' ? 'Iniciar Sesión' : mode === 'register' ? 'Registrar' : 'Recuperar Contraseña'}
                 </button>
                 <div className="mt-6 text-center">
@@ -122,13 +122,13 @@ const Login = () => {
                         <>
                             <p className="text-sm text-gray-300">
                                 ¿No tienes una cuenta?{' '}
-                                <span className="text-purple-500 font-medium cursor-pointer" onClick={() => setMode('register')}>
+                                <span className="text-green-500 font-medium cursor-pointer" onClick={() => setMode('register')}>
                                     Regístrate
                                 </span>
                             </p>
                             <p className="text-sm text-gray-300 mt-2">
                                 ¿Olvidaste tu contraseña?{' '}
-                                <span className="text-blue-500 font-medium cursor-pointer" onClick={() => setMode('forgotPassword')}>
+                                <span className="text-red-500 font-medium cursor-pointer" onClick={() => setMode('forgotPassword')}>
                                     Recupérala
                                 </span>
                             </p>
@@ -137,7 +137,7 @@ const Login = () => {
                     {mode === 'register' && (
                         <p className="text-sm text-gray-300">
                             ¿Ya tienes una cuenta?{' '}
-                            <span className="text-blue-500 font-medium cursor-pointer" onClick={() => setMode('login')}>
+                            <span className="text-red-500 font-medium cursor-pointer" onClick={() => setMode('login')}>
                                 Inicia Sesión
                             </span>
                         </p>
@@ -145,7 +145,7 @@ const Login = () => {
                     {mode === 'forgotPassword' && (
                         <p className="text-sm text-gray-300">
                             ¿Ya tienes una cuenta?{' '}
-                            <span className="text-purple-500 font-medium cursor-pointer" onClick={() => setMode('login')}>
+                            <span className="text-green-500 font-medium cursor-pointer" onClick={() => setMode('login')}>
                                 Inicia Sesión
                             </span>
                         </p>

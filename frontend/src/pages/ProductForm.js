@@ -76,7 +76,7 @@ const ProductForm = () => {
             <Header />
             <div className="container mx-auto p-6 mt-16">
                 <div className="max-w-lg mx-auto bg-gray-800 rounded-lg shadow-lg p-8">
-                    <h1 className="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                    <h1 className="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-green-400 to-yellow-400">
                         {id ? 'Editar Producto' : 'Crear Producto'}
                     </h1>
                     {message && <p className="text-center text-green-500">{message}</p>}
@@ -88,7 +88,7 @@ const ProductForm = () => {
                                 name="name"
                                 value={product.name}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 required
                             />
                         </div>
@@ -98,7 +98,7 @@ const ProductForm = () => {
                                 name="description"
                                 value={product.description}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 required
                             />
                         </div>
@@ -109,7 +109,7 @@ const ProductForm = () => {
                                 name="price"
                                 value={product.price}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 required
                             />
                         </div>
@@ -119,7 +119,7 @@ const ProductForm = () => {
                                 type="file"
                                 name="image"
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 accept="image/*"
                             />
                             {product.image && (
@@ -138,7 +138,7 @@ const ProductForm = () => {
                                 name="featured"
                                 checked={product.featured}
                                 onChange={handleChange}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
                             />
                             <label className="ml-2 block text-sm text-gray-300">Destacado</label>
                         </div>
@@ -148,14 +148,14 @@ const ProductForm = () => {
                                 name="isNewProduct"
                                 checked={product.isNewProduct}
                                 onChange={handleChange}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
                             />
                             <label className="ml-2 block text-sm text-gray-300">Nuevo</label>
                         </div>
                         <div>
                             <button
                                 type="submit"
-                                className="w-full px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg font-medium hover:opacity-90 transition"
+                                className="w-full px-4 py-2 bg-gradient-to-r from-red-500 to-green-500 rounded-lg font-medium hover:opacity-90 transition"
                             >
                                 {id ? 'Actualizar Producto' : 'Crear Producto'}
                             </button>
