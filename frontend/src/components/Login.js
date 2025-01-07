@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Checkbox from './Checkbox';
+import axios from 'axios';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -40,7 +41,7 @@ const Login = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/users/register', { username, password, email });
+            const response = await axios.post('http://localhost:5001/api/users/register', { username, password, email });
             console.log(response.data);
             setMode('login'); // Cambiar al modo de inicio de sesión
         } catch (err) {

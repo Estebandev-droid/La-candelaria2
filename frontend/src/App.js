@@ -7,6 +7,7 @@ import ProductDetails from './pages/ProductDetails';
 import ProductForm from './pages/ProductForm';
 import ProductList from './pages/ProductList';
 import EditProduct from './pages/EditProduct';
+import CategoryProducts from './pages/CategoryProducts';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/create-product" element={<ProductForm />} />
           <Route path="/edit-product/:id" element={<EditProduct />} />
           <Route path="/product-list" element={<ProductList />} />
+          <Route path="/categories/:categoryName" element={<CategoryProducts />} />
         </Routes>
       </div>
     </Router>

@@ -11,24 +11,21 @@ const userRoutes = require('./routes/userRoutes');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Servir archivos estáticos desde la carpeta 'uploads'
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos estáticos
 
 // Rutas
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 
-// Conexión a la base de datos
+// Conexión a MongoDB
 connectDB();
 
-// Iniciar el servidor
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

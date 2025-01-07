@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getProductById, updateProduct } from '../services/productService';
+import { AuthContext } from '../context/AuthContext';
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 
 const EditProduct = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { isAuthenticated } = useContext(AuthContext);
     const [product, setProduct] = useState({
         name: '',
         description: '',
         price: '',
-        image: null,
+        imageUrl: '',
         featured: false,
         isNewProduct: false,
     });
+    const [image, setImage] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -25,8 +28,8 @@ const EditProduct = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`/api/products/${id}`);
-                setProduct(response.data);
+                const data = await getProductById(id);
+                setProduct(data);
             } catch (error) {
                 console.error('Error al obtener el producto:', error);
             }
@@ -36,41 +39,35 @@ const EditProduct = () => {
     }, [id]);
 
     const handleChange = (e) => {
-        const { name, value, type, checked, files } = e.target;
-        if (name === 'image') {
-            setProduct({
-                ...product,
-                image: files[0],
-            });
-        } else {
-            setProduct({
-                ...product,
-                [name]: type === 'checkbox' ? checked : value,
-            });
-        }
+        const { name, value, type, checked } = e.target;
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
+
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const formData = new FormData();
-            for (const key in product) {
-                formData.append(key, product[key]);
-            }
-            await axios.put(`/api/products/${id}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            setMessage('Producto actualizado con éxito.');
+            const updatedProduct = { ...product, image };
+            await updateProduct(id, updatedProduct);
+            setMessage('Producto actualizado exitosamente');
             setTimeout(() => {
-                navigate('/product-list');
-            }, 2000); // Redirigir después de 2 segundos
+                navigate('/product-list'); // Redirigir a la lista de productos después de actualizar
+            }, 2000); // Esperar 2 segundos antes de redirigir
         } catch (error) {
             console.error('Error al actualizar el producto:', error);
-            setMessage('Error al actualizar el producto.');
+            setMessage('Error al actualizar el producto');
         }
     };
+
+    if (!isAuthenticated) {
+        return <p>No estás autorizado para editar productos.</p>;
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
@@ -119,19 +116,10 @@ const EditProduct = () => {
                         <input
                             type="file"
                             name="image"
-                            onChange={handleChange}
+                            onChange={handleImageChange}
                             className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                             accept="image/*"
                         />
-                        {product.image && (
-                            <div className="mt-4">
-                                <img
-                                    src={URL.createObjectURL(product.image)}
-                                    alt="Vista previa"
-                                    className="w-32 h-32 object-cover rounded-lg"
-                                />
-                            </div>
-                        )}
                     </div>
                     <div className="flex items-center">
                         <input

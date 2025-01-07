@@ -1,11 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import Header from '../components/Header';
+import Menu from '../components/Menu';
 
 const Cart = () => {
     const { cart, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
     const { isAuthenticated, user } = useContext(AuthContext);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
 
     if (!isAuthenticated) {
         return (
@@ -25,8 +31,9 @@ const Cart = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
-            <Header />
-            <div className="container mx-auto p-6 mt-16">
+            <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+            <Menu toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+            <div className={`container mx-auto p-6 mt-16 transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
                 <h1 className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-green-500 to-yellow-500">
                     Tu Carrito de Compras
                 </h1>

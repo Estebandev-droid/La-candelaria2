@@ -3,19 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import { getProductById, createProduct, updateProduct } from '../services/productService';
 import { AuthContext } from '../context/AuthContext';
+import { categoriesData } from '../data/categoriesData';
 
 const ProductForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { isAuthenticated } = useContext(AuthContext);
-    const [product, setProduct] = useState({
-        name: '',
-        description: '',
-        price: '',
-        image: null,
-        featured: false,
-        isNewProduct: false,
-    });
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [image, setImage] = useState(null);
+    const [category, setCategory] = useState('');
+    const [featured, setFeatured] = useState(false);
+    const [isNewProduct, setIsNewProduct] = useState(false);
+    const [error, setError] = useState('');
     const [message, setMessage] = useState('');
 
     useEffect(() => {
@@ -23,7 +24,13 @@ const ProductForm = () => {
             const fetchProduct = async () => {
                 try {
                     const productData = await getProductById(id);
-                    setProduct(productData);
+                    setName(productData.name);
+                    setDescription(productData.description);
+                    setPrice(productData.price);
+                    setCategory(productData.category);
+                    setImage(productData.image);
+                    setFeatured(productData.featured);
+                    setIsNewProduct(productData.isNewProduct);
                 } catch (error) {
                     console.error('Error al obtener el producto:', error);
                 }
@@ -33,33 +40,35 @@ const ProductForm = () => {
         }
     }, [id]);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked, files } = e.target;
-        if (name === 'image') {
-            setProduct({
-                ...product,
-                image: files[0],
-            });
-        } else {
-            setProduct({
-                ...product,
-                [name]: type === 'checkbox' ? checked : value,
-            });
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isAuthenticated) {
             setMessage('Debes estar logueado para crear un producto.');
             return;
         }
+
+        // Validación de campos
+        if (!name || !description || !price || !category) {
+            setError('Todos los campos son obligatorios.');
+            return;
+        }
+
         try {
+            const productData = {
+                name,
+                description,
+                price,
+                category,
+                featured,
+                isNewProduct,
+                image: image ? image : null,
+            };
+
             if (id) {
-                await updateProduct(id, product);
+                await updateProduct(id, productData);
                 setMessage('Producto actualizado con éxito.');
             } else {
-                await createProduct(product);
+                await createProduct(productData);
                 setMessage('Producto creado con éxito.');
             }
             setTimeout(() => {
@@ -67,7 +76,24 @@ const ProductForm = () => {
             }, 2000); // Redirigir después de 2 segundos
         } catch (error) {
             console.error('Error al guardar el producto:', error);
-            setMessage('Error al guardar el producto.');
+
+            if (error.response && error.response.data) {
+                // Check for detailed error messages from the server
+                const serverError = error.response.data;
+                if (serverError.details && Array.isArray(serverError.details)) {
+                    setMessage(serverError.details.map(detail => `${detail.field}: ${detail.message}`).join(', '));
+                } else if (serverError.message) {
+                    setMessage(serverError.message);
+                } else {
+                    setMessage('Error al guardar el producto.'); // Fallback message
+                }
+            } else if (error.request) {
+                // The request was made but no response was received
+                setMessage('No se recibió respuesta del servidor.');
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                setMessage('Error al configurar la solicitud.');
+            }
         }
     };
 
@@ -80,14 +106,15 @@ const ProductForm = () => {
                         {id ? 'Editar Producto' : 'Crear Producto'}
                     </h1>
                     {message && <p className="text-center text-green-500">{message}</p>}
+                    {error && <p className="text-center text-red-500">{error}</p>}
                     <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-300">Nombre</label>
                             <input
                                 type="text"
                                 name="name"
-                                value={product.name}
-                                onChange={handleChange}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                                 className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 required
                             />
@@ -96,8 +123,8 @@ const ProductForm = () => {
                             <label className="block text-sm font-medium text-gray-300">Descripción</label>
                             <textarea
                                 name="description"
-                                value={product.description}
-                                onChange={handleChange}
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                                 className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 required
                             />
@@ -107,25 +134,42 @@ const ProductForm = () => {
                             <input
                                 type="number"
                                 name="price"
-                                value={product.price}
-                                onChange={handleChange}
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
                                 className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 required
                             />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300">Categoría</label>
+                            <select
+                                name="category"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
+                                required
+                            >
+                                <option value="">Selecciona una categoría</option>
+                                {categoriesData.map((category) => (
+                                    <option key={category.name} value={category.name}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300">Imagen</label>
                             <input
                                 type="file"
                                 name="image"
-                                onChange={handleChange}
+                                onChange={(e) => setImage(e.target.files[0])}
                                 className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 accept="image/*"
                             />
-                            {product.image && (
+                            {image && (
                                 <div className="mt-4">
                                     <img
-                                        src={URL.createObjectURL(product.image)}
+                                        src={URL.createObjectURL(image)}
                                         alt="Vista previa"
                                         className="w-32 h-32 object-cover rounded-lg"
                                     />
@@ -136,8 +180,8 @@ const ProductForm = () => {
                             <input
                                 type="checkbox"
                                 name="featured"
-                                checked={product.featured}
-                                onChange={handleChange}
+                                checked={featured}
+                                onChange={(e) => setFeatured(e.target.checked)}
                                 className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
                             />
                             <label className="ml-2 block text-sm text-gray-300">Destacado</label>
@@ -146,8 +190,8 @@ const ProductForm = () => {
                             <input
                                 type="checkbox"
                                 name="isNewProduct"
-                                checked={product.isNewProduct}
-                                onChange={handleChange}
+                                checked={isNewProduct}
+                                onChange={(e) => setIsNewProduct(e.target.checked)}
                                 className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
                             />
                             <label className="ml-2 block text-sm text-gray-300">Nuevo</label>

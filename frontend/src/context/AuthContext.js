@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const response = await axios.get('/api/users/me', {
+                    const response = await axios.get('http://localhost:5001/api/users/me', {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         try {
-            const response = await axios.post('/api/users/login', { username, password });
+            const response = await axios.post('http://localhost:5001/api/users/login', { username, password });
             localStorage.setItem('token', response.data.token);
             setUser(response.data);
             setIsAuthenticated(true);

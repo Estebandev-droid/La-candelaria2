@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 import { Link } from 'react-router-dom';
+import { getProducts } from '../services/productService';
+import CategoryCarousel from '../components/CategoryCarousel';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -16,24 +17,24 @@ const Home = () => {
     const { addToCart } = useContext(CartContext);
     const { user } = useContext(AuthContext);
 
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const products = await getProducts();
+                setProducts(products);
+                setFeaturedProducts(products.filter(product => product.featured));
+                setNewProducts(products.filter(product => product.isNewProduct));
+            } catch (error) {
+                setMessage('Error al obtener los productos');
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
-
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get('/api/products');
-            setProducts(response.data);
-            setFeaturedProducts(response.data.filter(product => product.featured));
-            setNewProducts(response.data.filter(product => product.isNewProduct));
-        } catch (error) {
-            console.error('Error al obtener los productos:', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
 
     const handleSearch = (term) => {
         setSearchTerm(term);
@@ -64,10 +65,10 @@ const Home = () => {
             <Menu toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
             <main className={`container mx-auto p-6 mt-16 transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
-                <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-green-400 to-yellow-400">
+                <h1 className="text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-green-400 to-yellow-400 mb-8">
                     Bienvenido a Mi Tienda
                 </h1>
-                <p className="mt-4 text-center text-lg text-gray-300">
+                <p className="mt-4 text-center text-lg text-gray-300 mb-8">
                     Encuentra los mejores productos aquí.
                 </p>
                 {message && (
@@ -76,7 +77,7 @@ const Home = () => {
                     </div>
                 )}
                 {/* Barra de búsqueda */}
-                <div className="container mx-auto p-6">
+                <div className="container mx-auto mb-8">
                     <div className="relative">
                         <input
                             type="text"
@@ -88,9 +89,15 @@ const Home = () => {
                     </div>
                 </div>
 
+                {/* Carrusel de categorías */}
+                <CategoryCarousel />
+
+                {/* Espaciado adicional entre el carrusel y los productos */}
+                <div className="my-12"></div>
+
                 {/* Productos destacados */}
-                <div className="container mx-auto p-6">
-                    <h3 className="text-3xl font-bold mb-4 text-green-300">Productos destacados</h3>
+                <div className="container mx-auto mb-16">
+                    <h3 className="text-4xl font-bold mb-8 text-green-300 text-center">Productos destacados</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => (
@@ -101,7 +108,7 @@ const Home = () => {
                                     <Link to={`/product/${product._id}`}>
                                         <div className="w-full h-48 flex items-center justify-center overflow-hidden">
                                             <img
-                                                src={product.imageUrl}
+                                                src={`${process.env.REACT_APP_API_URL}/uploads/${product.imageUrl}`}
                                                 alt={product.name}
                                                 className="w-48 h-48 object-cover rounded-full hover:opacity-90 transition-transform duration-300"
                                             />
@@ -129,8 +136,8 @@ const Home = () => {
                 </div>
 
                 {/* Nuevos productos */}
-                <div className="container mx-auto p-6">
-                    <h3 className="text-3xl font-bold mb-4 text-red-300">Nuevos productos</h3>
+                <div className="container mx-auto mb-8">
+                    <h3 className="text-4xl font-bold mb-8 text-red-300 text-center">Nuevos productos</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {newProducts.map((product) => (
                             <div
@@ -140,7 +147,7 @@ const Home = () => {
                                 <Link to={`/product/${product._id}`}>
                                     <div className="w-full h-48 flex items-center justify-center overflow-hidden">
                                         <img
-                                            src={product.imageUrl}
+                                            src={`${process.env.REACT_APP_API_URL}/uploads/${product.imageUrl}`}
                                             alt={product.name}
                                             className="w-48 h-48 object-cover rounded-full hover:opacity-90 transition-transform duration-300"
                                         />
@@ -164,7 +171,17 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/* Botón flotante */}
+                {/* Botón flotante de WhatsApp */}
+                <a
+                    href="https://wa.me/1234567890"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="fixed bottom-24 right-4 bg-green-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform"
+                >
+                    <i className="fab fa-whatsapp text-2xl"></i>
+                </a>
+
+                {/* Botón flotante del carrito */}
                 <Link
                     to="/cart"
                     className="fixed bottom-4 right-4 bg-gradient-to-r from-green-500 to-red-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform"
@@ -174,17 +191,6 @@ const Home = () => {
 
                 {/* Footer */}
                 <footer className="mt-16 p-4 bg-gray-800 text-center">
-                    <div className="flex justify-center space-x-4">
-                        <a
-                            href="https://wa.me/1234567890"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center space-x-2 text-green-400 hover:text-green-500 transition"
-                        >
-                            <i className="fab fa-whatsapp text-3xl"></i>
-                            <span className="text-lg font-medium">Contáctanos por WhatsApp</span>
-                        </a>
-                    </div>
                     <div className="mt-4 text-center text-sm text-gray-500">&copy; 2025 Tu Tienda. Todos los derechos reservados.</div>
                 </footer>
             </main>
