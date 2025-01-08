@@ -66,7 +66,7 @@ const Home = () => {
 
             <main className={`container mx-auto p-6 mt-16 transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
                 <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-green-400 to-yellow-400">
-                    Bienvenido a Mi Tienda
+                    Bienvenido a Tu Tienda
                 </h1>
                 <p className="mt-4 text-center text-lg text-gray-300">
                     Encuentra los mejores productos aquí.
