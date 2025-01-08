@@ -3,6 +3,7 @@ import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import Header from '../components/Header';
 import Menu from '../components/Menu';
+import Carousel from '../components/Carousel'; // Importar el componente del carrusel
 import { Link } from 'react-router-dom';
 import { getProducts } from '../services/productService';
 import CategoryCarousel from '../components/CategoryCarousel';
@@ -65,8 +66,13 @@ const Home = () => {
             <Menu toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
             <main className={`container mx-auto p-6 mt-16 transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
+<<<<<<< HEAD
                 <h1 className="text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-green-400 to-yellow-400 mb-8">
                     Bienvenido a Mi Tienda
+=======
+                <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-green-400 to-yellow-400">
+                    Bienvenido a Tu Tienda
+>>>>>>> origin/main
                 </h1>
                 <p className="mt-4 text-center text-lg text-gray-300 mb-8">
                     Encuentra los mejores productos aquí.
@@ -76,6 +82,9 @@ const Home = () => {
                         {message}
                     </div>
                 )}
+                {/* Carrusel de categorías */}
+                <Carousel />
+
                 {/* Barra de búsqueda */}
                 <div className="container mx-auto mb-8">
                     <div className="relative">
@@ -110,18 +119,18 @@ const Home = () => {
                                             <img
                                                 src={`${process.env.REACT_APP_API_URL}/uploads/${product.imageUrl}`}
                                                 alt={product.name}
-                                                className="w-48 h-48 object-cover rounded-full hover:opacity-90 transition-transform duration-300"
+                                                className="w-full h-full object-cover hover:opacity-90 transition"
                                             />
                                         </div>
                                     </Link>
                                     <div className="p-4">
-                                        <h2 className="text-xl font-semibold text-green-400 text-center">{product.name}</h2>
-                                        <p className="text-gray-400 text-sm text-center">{product.description}</p>
-                                        <p className="text-lg font-bold text-green-400 mt-2 text-center">${product.price}</p>
-                                        <div className="mt-4 flex justify-center">
+                                        <h2 className="text-xl font-semibold text-green-400">{product.name}</h2>
+                                        <p className="text-gray-400 text-sm">{product.description}</p>
+                                        <p className="text-lg font-bold text-red-400 mt-2">${product.price}</p>
+                                        <div className="mt-4 flex items-center">
                                             <button
                                                 onClick={() => handleAddToCart(product)}
-                                                className="px-4 py-2 bg-gradient-to-r from-green-500 to-red-500 text-white font-medium rounded-lg hover:opacity-90 transition"
+                                                className="px-4 py-2 bg-gradient-to-r from-red-500 to-green-500 text-white font-medium rounded-lg hover:opacity-90 transition"
                                             >
                                                 Agregar al carrito
                                             </button>
@@ -149,15 +158,15 @@ const Home = () => {
                                         <img
                                             src={`${process.env.REACT_APP_API_URL}/uploads/${product.imageUrl}`}
                                             alt={product.name}
-                                            className="w-48 h-48 object-cover rounded-full hover:opacity-90 transition-transform duration-300"
+                                            className="w-full h-full object-cover hover:opacity-90 transition"
                                         />
                                     </div>
                                 </Link>
                                 <div className="p-4">
-                                    <h2 className="text-xl font-semibold text-red-400 text-center">{product.name}</h2>
-                                    <p className="text-gray-400 text-sm text-center">{product.description}</p>
-                                    <p className="text-lg font-bold text-green-400 mt-2 text-center">${product.price}</p>
-                                    <div className="mt-4 flex justify-center">
+                                    <h2 className="text-xl font-semibold text-green-400">{product.name}</h2>
+                                    <p className="text-gray-400 text-sm">{product.description}</p>
+                                    <p className="text-lg font-bold text-red-400 mt-2">${product.price}</p>
+                                    <div className="mt-4 flex items-center">
                                         <button
                                             onClick={() => handleAddToCart(product)}
                                             className="px-4 py-2 bg-gradient-to-r from-red-500 to-green-500 text-white font-medium rounded-lg hover:opacity-90 transition"
@@ -171,6 +180,7 @@ const Home = () => {
                     </div>
                 </div>
 
+<<<<<<< HEAD
                 {/* Botón flotante de WhatsApp */}
                 <a
                     href="https://wa.me/1234567890"
@@ -181,13 +191,25 @@ const Home = () => {
                     <i className="fab fa-whatsapp text-2xl"></i>
                 </a>
 
+=======
+>>>>>>> origin/main
                 {/* Botón flotante del carrito */}
                 <Link
                     to="/cart"
-                    className="fixed bottom-4 right-4 bg-gradient-to-r from-green-500 to-red-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform"
+                    className="fixed bottom-4 right-4 bg-gradient-to-r from-red-500 to-green-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform transform hover:rotate-12"
                 >
                     <i className="fas fa-shopping-cart text-2xl"></i>
                 </Link>
+
+                {/* Botón flotante de WhatsApp */}
+                <a
+                    href="https://wa.me/1234567890"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="fixed bottom-24 right-4 bg-green-500 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform transform hover:rotate-12"
+                >
+                    <i className="fab fa-whatsapp text-2xl"></i>
+                </a>
 
                 {/* Footer */}
                 <footer className="mt-16 p-4 bg-gray-800 text-center">

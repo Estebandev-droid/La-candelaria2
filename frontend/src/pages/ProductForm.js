@@ -9,6 +9,7 @@ const ProductForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { isAuthenticated } = useContext(AuthContext);
+<<<<<<< HEAD
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -17,6 +18,17 @@ const ProductForm = () => {
     const [featured, setFeatured] = useState(false);
     const [isNewProduct, setIsNewProduct] = useState(false);
     const [error, setError] = useState('');
+=======
+    const [product, setProduct] = useState({
+        name: '',
+        description: '',
+        price: '',
+        image: null,
+        category: '',
+        featured: false,
+        isNewProduct: false,
+    });
+>>>>>>> origin/main
     const [message, setMessage] = useState('');
 
     useEffect(() => {
@@ -72,7 +84,7 @@ const ProductForm = () => {
                 setMessage('Producto creado con éxito.');
             }
             setTimeout(() => {
-                navigate('/');
+                navigate('/product-list');
             }, 2000); // Redirigir después de 2 segundos
         } catch (error) {
             console.error('Error al guardar el producto:', error);
@@ -144,17 +156,32 @@ const ProductForm = () => {
                             <label className="block text-sm font-medium text-gray-300">Categoría</label>
                             <select
                                 name="category"
+<<<<<<< HEAD
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
+=======
+                                value={product.category}
+                                onChange={handleChange}
+>>>>>>> origin/main
                                 className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 required
                             >
                                 <option value="">Selecciona una categoría</option>
+<<<<<<< HEAD
                                 {categoriesData.map((category) => (
                                     <option key={category.name} value={category.name}>
                                         {category.name}
                                     </option>
                                 ))}
+=======
+                                <option value="Aseo">Aseo</option>
+                                <option value="Dulces">Dulces</option>
+                                <option value="Bebidas">Bebidas</option>
+                                <option value="Lácteos">Lácteos</option>
+                                <option value="Carnes">Carnes</option>
+                                <option value="Verduras">Verduras</option>
+                                <option value="Frutas">Frutas</option>
+>>>>>>> origin/main
                             </select>
                         </div>
                         <div>
