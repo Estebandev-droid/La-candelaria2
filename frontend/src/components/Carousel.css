@@ -37,10 +37,6 @@
     animation: rotateIn 1s forwards;
 }
 
-.carousel-item:hover {
-    transform: rotateY(360deg);
-}
-
 .carousel-icon {
     font-size: 3rem;
     color: #fff;

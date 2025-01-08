@@ -8,6 +8,8 @@ const categories = [
     { name: 'Bebidas', icon: '🥤', path: '/category/bebidas' },
     { name: 'Frutas', icon: '🍎', path: '/category/frutas' },
     { name: 'Verduras', icon: '🥦', path: '/category/verduras' },
+    { name: 'Lácteos', icon: '🧀', path: '/category/lacteos' },
+    { name: 'Carnes', icon: '🥩', path: '/category/carnes' },
 ];
 
 const Carousel = () => {
