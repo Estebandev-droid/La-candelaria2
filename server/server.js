@@ -7,6 +7,7 @@ const path = require('path');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
+const { swaggerUi, specs } = require('./config/swagger');
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos estáticos
+
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Rutas
 app.use('/api/products', productRoutes);
