@@ -30,6 +30,7 @@ const CategoryProducts = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products.map((product) => (
                     <div key={product._id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <img src={`${process.env.REACT_APP_API_URL}/uploads/${product.image}`} alt={product.name} className="w-full h-32 object-cover rounded-lg mb-4" />
                         <h2 className="text-2xl font-bold text-green-400">{product.name}</h2>
                         <p className="text-gray-300">{product.description}</p>
                         <p className="text-lg font-bold text-green-400 mt-2">${product.price}</p>

@@ -6,8 +6,10 @@
 @import "~slick-carousel/slick/slick-theme.css";
 
 /* Estilos personalizados */
-body {
-    @apply bg-gray-900 text-gray-300;
+@layer base {
+  body {
+    @apply bg-gradient-to-r from-orange-100 via-yellow-100 to-orange-200 text-gray-800;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

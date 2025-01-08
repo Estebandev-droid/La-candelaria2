@@ -56,54 +56,54 @@ const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-red-900 via-red-800 to-green-900">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-orange-100 via-yellow-100 to-orange-200">
             <form 
                 onSubmit={mode === 'login' ? handleLogin : mode === 'register' ? handleRegister : handleForgotPassword} 
-                className="bg-white/10 backdrop-blur-lg p-8 rounded-xl shadow-2xl w-96 transform transition-all duration-500 hover:scale-105">
-                <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-green-600 mb-6 text-center">
+                className="bg-white/80 backdrop-blur-xl p-8 rounded-xl shadow-xl w-96 transform transition-all duration-500 hover:scale-105">
+                <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 mb-6 text-center">
                     {mode === 'login' ? 'Iniciar Sesión' : mode === 'register' ? 'Registrar Usuario' : 'Recuperar Contraseña'}
                 </h2>
-                {error && <p className="text-red-500 font-semibold text-sm mb-4">{error}</p>}
+                {error && <p className="text-red-600 font-semibold text-sm mb-4">{error}</p>}
                 {mode !== 'forgotPassword' && (
                     <div className="mb-4 relative">
-                        <label className="block text-sm font-semibold text-gray-300">Usuario</label>
+                        <label className="block text-sm font-semibold text-orange-700">Usuario</label>
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500 pl-10"
+                            className="mt-1 block w-full border border-orange-300 rounded-lg p-3 bg-orange-50 text-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-400 pl-10"
                             placeholder="Ingresa tu usuario"
                             required
                         />
-                        <i className="fas fa-user absolute left-3 top-10 text-gray-400"></i>
+                        <i className="fas fa-user absolute left-3 top-10 text-orange-400"></i>
                     </div>
                 )}
                 {mode === 'register' && (
                     <div className="mb-4 relative">
-                        <label className="block text-sm font-semibold text-gray-300">Correo Electrónico</label>
+                        <label className="block text-sm font-semibold text-orange-700">Correo Electrónico</label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500 pl-10"
+                            className="mt-1 block w-full border border-orange-300 rounded-lg p-3 bg-orange-50 text-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-400 pl-10"
                             placeholder="Ingresa tu correo"
                             required
                         />
-                        <i className="fas fa-envelope absolute left-3 top-10 text-gray-400"></i>
+                        <i className="fas fa-envelope absolute left-3 top-10 text-orange-400"></i>
                     </div>
                 )}
                 {mode !== 'forgotPassword' && (
                     <div className="mb-4 relative">
-                        <label className="block text-sm font-semibold text-gray-300">Contraseña</label>
+                        <label className="block text-sm font-semibold text-orange-700">Contraseña</label>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="mt-1 block w-full border border-gray-600 rounded-lg p-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-500 pl-10"
+                            className="mt-1 block w-full border border-orange-300 rounded-lg p-3 bg-orange-50 text-orange-800 focus:outline-none focus:ring-2 focus:ring-yellow-400 pl-10"
                             placeholder="Ingresa tu contraseña"
                             required
                         />
-                        <i className="fas fa-lock absolute left-3 top-10 text-gray-400"></i>
+                        <i className="fas fa-lock absolute left-3 top-10 text-orange-400"></i>
                     </div>
                 )}
                 {mode === 'login' && (
@@ -112,22 +112,22 @@ const Login = () => {
                             checked={rememberUser}
                             onChange={(e) => setRememberUser(e.target.checked)}
                         />
-                        <span className="text-sm text-green-500 ml-2">Recordar usuario</span>
+                        <span className="text-sm text-orange-600 ml-2">Recordar usuario</span>
                     </div>
                 )}
-                <button type="submit" className="w-full bg-gradient-to-r from-red-500 to-green-500 text-white font-bold py-2 px-4 rounded-lg hover:scale-105 transition-transform">
+                <button type="submit" className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-bold py-2 px-4 rounded-lg hover:scale-105 transition-transform">
                     {mode === 'login' ? 'Iniciar Sesión' : mode === 'register' ? 'Registrar' : 'Recuperar Contraseña'}
                 </button>
                 <div className="mt-6 text-center">
                     {mode === 'login' && (
                         <>
-                            <p className="text-sm text-gray-300">
+                            <p className="text-sm text-orange-600">
                                 ¿No tienes una cuenta?{' '}
-                                <span className="text-green-500 font-medium cursor-pointer" onClick={() => setMode('register')}>
+                                <span className="text-yellow-500 font-medium cursor-pointer" onClick={() => setMode('register')}>
                                     Regístrate
                                 </span>
                             </p>
-                            <p className="text-sm text-gray-300 mt-2">
+                            <p className="text-sm text-orange-600 mt-2">
                                 ¿Olvidaste tu contraseña?{' '}
                                 <span className="text-red-500 font-medium cursor-pointer" onClick={() => setMode('forgotPassword')}>
                                     Recupérala
@@ -136,7 +136,7 @@ const Login = () => {
                         </>
                     )}
                     {mode === 'register' && (
-                        <p className="text-sm text-gray-300">
+                        <p className="text-sm text-orange-600">
                             ¿Ya tienes una cuenta?{' '}
                             <span className="text-red-500 font-medium cursor-pointer" onClick={() => setMode('login')}>
                                 Inicia Sesión
@@ -144,9 +144,9 @@ const Login = () => {
                         </p>
                     )}
                     {mode === 'forgotPassword' && (
-                        <p className="text-sm text-gray-300">
+                        <p className="text-sm text-orange-600">
                             ¿Ya tienes una cuenta?{' '}
-                            <span className="text-green-500 font-medium cursor-pointer" onClick={() => setMode('login')}>
+                            <span className="text-yellow-500 font-medium cursor-pointer" onClick={() => setMode('login')}>
                                 Inicia Sesión
                             </span>
                         </p>
