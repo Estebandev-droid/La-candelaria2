@@ -37,10 +37,10 @@ class ProductController {
     }
 
     async createProduct(req, res) {
-        const { name, description, price, featured, isNewProduct } = req.body;
+        const { name, description, price, category, featured, isNewProduct } = req.body;
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
         try {
-            const newProduct = new Product({ name, description, price, imageUrl, featured, isNewProduct });
+            const newProduct = new Product({ name, description, price, category, imageUrl, featured, isNewProduct });
             await newProduct.save();
             res.status(201).json(newProduct);
         } catch (error) {
@@ -49,12 +49,12 @@ class ProductController {
     }
 
     async updateProduct(req, res) {
-        const { name, description, price, featured, isNewProduct } = req.body;
+        const { name, description, price, category, featured, isNewProduct } = req.body;
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
         try {
             const updatedProduct = await Product.findByIdAndUpdate(
                 req.params.id,
-                { name, description, price, imageUrl, featured, isNewProduct },
+                { name, description, price, category, imageUrl, featured, isNewProduct },
                 { new: true }
             );
             if (!updatedProduct) {

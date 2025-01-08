@@ -7,6 +7,7 @@ import ProductDetails from './pages/ProductDetails';
 import ProductForm from './pages/ProductForm';
 import ProductList from './pages/ProductList';
 import EditProduct from './pages/EditProduct';
+import Category from './pages/Category'; // Importar el componente de categoría
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/create-product" element={<ProductForm />} />
           <Route path="/edit-product/:id" element={<EditProduct />} />
           <Route path="/product-list" element={<ProductList />} />
+          <Route path="/category/:categoryName" element={<Category />} /> {/* Ruta para las categorías */}
         </Routes>
       </div>
     </Router>

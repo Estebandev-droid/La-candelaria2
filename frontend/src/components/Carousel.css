@@ -1,0 +1,85 @@
+.carousel-container {
+    perspective: 1000px;
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    position: relative;
+}
+
+.carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.carousel-item {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    margin: 0 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.5s;
+    position: absolute;
+    transform: rotateY(0deg) translateZ(300px);
+}
+
+.carousel-item.active {
+    display: flex;
+    animation: rotateIn 1s forwards;
+}
+
+.carousel-item:hover {
+    transform: rotateY(360deg);
+}
+
+.carousel-icon {
+    font-size: 3rem;
+    color: #fff;
+}
+
+.carousel-name {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.carousel-button.left {
+    left: 10px;
+}
+
+.carousel-button.right {
+    right: 10px;
+}
+
+@keyframes rotateIn {
+    from {
+        transform: rotateY(-90deg) translateZ(300px);
+        opacity: 0;
+    }
+    to {
+        transform: rotateY(0deg) translateZ(300px);
+        opacity: 1;
+    }
+}

@@ -13,6 +13,7 @@ const ProductForm = () => {
         description: '',
         price: '',
         image: null,
+        category: '',
         featured: false,
         isNewProduct: false,
     });
@@ -63,7 +64,7 @@ const ProductForm = () => {
                 setMessage('Producto creado con éxito.');
             }
             setTimeout(() => {
-                navigate('/');
+                navigate('/product-list');
             }, 2000); // Redirigir después de 2 segundos
         } catch (error) {
             console.error('Error al guardar el producto:', error);
@@ -112,6 +113,25 @@ const ProductForm = () => {
                                 className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
                                 required
                             />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300">Categoría</label>
+                            <select
+                                name="category"
+                                value={product.category}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
+                                required
+                            >
+                                <option value="">Selecciona una categoría</option>
+                                <option value="Aseo">Aseo</option>
+                                <option value="Dulces">Dulces</option>
+                                <option value="Bebidas">Bebidas</option>
+                                <option value="Lácteos">Lácteos</option>
+                                <option value="Carnes">Carnes</option>
+                                <option value="Verduras">Verduras</option>
+                                <option value="Frutas">Frutas</option>
+                            </select>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300">Imagen</label>
