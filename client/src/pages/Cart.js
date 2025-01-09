@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 import Checkout from '../components/Checkout';
+import axios from 'axios';
 
 const Cart = () => {
     const { cart, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
@@ -52,10 +53,22 @@ const Cart = () => {
         }
     };
 
-    const handlePurchase = () => {
-        alert(`Pago realizado con ${paymentMethod}`);
-        // Aquí puedes agregar la lógica para generar el pedido
-        setIsCheckoutOpen(false);
+    const handlePurchase = async () => {
+        try {
+            for (const item of cart) {
+                await axios.post(`${process.env.REACT_APP_API_URL}/api/inventory`, {
+                    product: item.product._id,
+                    type: 'venta',
+                    quantity: item.quantity,
+                });
+            }
+            alert(`Pago realizado con ${paymentMethod}`);
+            clearCart();
+            setIsCheckoutOpen(false);
+        } catch (error) {
+            console.error('Error al procesar la compra:', error);
+            alert('Error al procesar la compra. Inténtalo de nuevo.');
+        }
     };
 
     return (
@@ -71,7 +84,7 @@ const Cart = () => {
                 ) : (
                     <div className="mt-10 space-y-6">
                         {cart.map((item) => (
-                            <div key={item.product._id} className="flex flex-col md:flex-row items-center justify-between bg-orange-50 p-6 rounded-lg shadow-md">
+                            <div key={item.product._id} className="flex flex-col md:flex-row items-center justify-between bg-white/10 backdrop-blur-lg p-6 rounded-lg shadow-lg">
                                 <div className="flex items-center space-x-6">
                                     <img
                                         src={`${process.env.REACT_APP_API_URL}/uploads/${item.product.image}`}
@@ -88,10 +101,11 @@ const Cart = () => {
                                             className="w-16 px-2 py-1 mt-1 rounded-lg bg-orange-100 text-gray-800 focus:ring-2 focus:ring-orange-400 focus:outline-none text-center"
                                             min="1"
                                         />
+                                        <p className="text-gray-600 text-sm mt-2">Precio unitario: <span className="font-bold text-orange-700">${item.product.price}</span></p>
+                                        <p className="text-gray-600 text-sm mt-2">Total: <span className="font-bold text-orange-700">${item.product.price * item.quantity}</span></p>
                                     </div>
                                 </div>
                                 <div className="mt-4 md:mt-0 md:text-right">
-                                    <p className="text-xl font-bold text-orange-700">${item.product.price}</p>
                                     <button
                                         onClick={() => removeFromCart(item.product._id)}
                                         className="mt-4 px-4 py-2 bg-gradient-to-r from-red-400 to-green-400 text-white rounded-lg font-medium hover:scale-105 transition-transform"

@@ -54,13 +54,13 @@ const ProductList = () => {
                 <div className="mt-8">
                     <ul className="space-y-4">
                         {products.map(product => (
-                            <li key={product._id} className="bg-orange-50 p-4 rounded-lg shadow-lg flex items-center justify-between">
+                            <li key={product._id} className="bg-white/10 backdrop-blur-lg p-4 rounded-lg shadow-lg flex items-center justify-between">
                                 <div className="flex items-center space-x-4">
                                     <img src={`${process.env.REACT_APP_API_URL}/uploads/${product.image}`} alt={product.name} className="w-16 h-16 object-cover rounded-lg" />
                                     <div>
                                         <h2 className="text-xl font-semibold text-orange-700">{product.name}</h2>
-                                        <p className="text-orange-600 text-sm">{product.description}</p>
-                                        <p className="text-lg font-bold text-orange-800 mt-2">${product.price}</p>
+                                        <p className="text-gray-600 text-sm">{product.description}</p>
+                                        <p className="text-lg font-bold text-orange-700 mt-2">${product.price}</p>
                                     </div>
                                 </div>
                                 <div className="flex space-x-4">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header';
+import Menu from '../components/Menu';
 import { getProductById, createProduct, updateProduct } from '../services/productService';
 import { AuthContext } from '../context/AuthContext';
 import { categoriesData } from '../data/categoriesData';
@@ -16,6 +17,7 @@ const ProductForm = () => {
     const [category, setCategory] = useState('');
     const [featured, setFeatured] = useState(false);
     const [isNewProduct, setIsNewProduct] = useState(false);
+    const [stock, setStock] = useState(0);
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
 
@@ -31,6 +33,7 @@ const ProductForm = () => {
                     setImage(productData.image);
                     setFeatured(productData.featured);
                     setIsNewProduct(productData.isNewProduct);
+                    setStock(productData.stock);
                 } catch (error) {
                     console.error('Error al obtener el producto:', error);
                 }
@@ -48,7 +51,7 @@ const ProductForm = () => {
         }
 
         // Validación de campos
-        if (!name || !description || !price || !category) {
+        if (!name || !description || !price || !category || stock === undefined) {
             setError('Todos los campos son obligatorios.');
             return;
         }
@@ -61,6 +64,7 @@ const ProductForm = () => {
                 category,
                 featured,
                 isNewProduct,
+                stock,
                 image: image ? image : null,
             };
 
@@ -72,7 +76,7 @@ const ProductForm = () => {
                 setMessage('Producto creado con éxito.');
             }
             setTimeout(() => {
-                navigate('/');
+                navigate('/product-list');
             }, 2000); // Redirigir después de 2 segundos
         } catch (error) {
             console.error('Error al guardar el producto:', error);
@@ -104,6 +108,7 @@ const ProductForm = () => {
     return (
         <div className="min-h-screen bg-gradient-to-b from-orange-100 via-yellow-100 to-orange-200 text-gray-800">
             <Header />
+            <Menu />
             <div className="container mx-auto p-6 mt-16">
                 <div className="max-w-lg mx-auto bg-white/10 backdrop-blur-lg rounded-lg shadow-lg p-8">
                     <h1 className="text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500">
@@ -208,6 +213,17 @@ const ProductForm = () => {
                                 className="h-4 w-4 text-orange-600 focus:ring-orange-400 border-orange-300 rounded"
                             />
                             <label className="ml-2 block text-sm text-orange-700">Nuevo</label>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Stock</label>
+                            <input
+                                type="number"
+                                name="stock"
+                                value={stock}
+                                onChange={(e) => setStock(e.target.value)}
+                                className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-orange-400"
+                                required
+                            />
                         </div>
                         <div>
                             <button

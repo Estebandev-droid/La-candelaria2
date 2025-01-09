@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Menu = ({ toggleMenu, isMenuOpen }) => {
-    const { user } = useContext(AuthContext);
+    const { user, isAuthenticated } = useContext(AuthContext);
 
     return (
         <div
@@ -20,49 +20,53 @@ const Menu = ({ toggleMenu, isMenuOpen }) => {
                 >
                     <i className="fas fa-times"></i>
                 </button>
+                <nav className="mt-8">
+                    <ul className="space-y-4">
+                        <li>
+                            <Link to="/" className="flex items-center space-x-2 hover:text-yellow-500">
+                                <i className="fas fa-home"></i>
+                                <span>Inicio</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/product-list" className="flex items-center space-x-2 hover:text-yellow-500">
+                                <i className="fas fa-box"></i>
+                                <span>Lista de Productos</span>
+                            </Link>
+                        </li>
+                        {isAuthenticated && (
+                            <>
+                                <li>
+                                    <Link to="/create-product" className="flex items-center space-x-2 hover:text-yellow-500">
+                                        <i className="fas fa-plus"></i>
+                                        <span>Crear Producto</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/inventory" className="flex items-center space-x-2 hover:text-yellow-500">
+                                        <i className="fas fa-warehouse"></i>
+                                        <span>Inventario</span>
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                        <li>
+                            <Link to="/cart" className="flex items-center space-x-2 hover:text-yellow-500">
+                                <i className="fas fa-shopping-cart"></i>
+                                <span>Carrito</span>
+                            </Link>
+                        </li>
+                        {!isAuthenticated && (
+                            <li>
+                                <Link to="/login" className="flex items-center space-x-2 hover:text-yellow-500">
+                                    <i className="fas fa-sign-in-alt"></i>
+                                    <span>Iniciar Sesión</span>
+                                </Link>
+                            </li>
+                        )}
+                    </ul>
+                </nav>
             </div>
-            <nav className="space-y-4 p-4">
-                <Link
-                    to="/"
-                    onClick={toggleMenu}
-                    className="block py-2 px-4 rounded hover:bg-gray-700 transition"
-                >
-                    <i className="fas fa-home mr-2"></i> Inicio
-                </Link>
-                {user ? (
-                    <>
-                        <Link
-                            to="/cart"
-                            onClick={toggleMenu}
-                            className="block py-2 px-4 rounded hover:bg-gray-700 transition"
-                        >
-                            <i className="fas fa-shopping-cart mr-2"></i> Carrito
-                        </Link>
-                        <Link
-                            to="/create-product"
-                            onClick={toggleMenu}
-                            className="block py-2 px-4 rounded hover:bg-gray-700 transition"
-                        >
-                            <i className="fas fa-plus mr-2"></i> Crear Producto
-                        </Link>
-                        <Link
-                            to="/product-list"
-                            onClick={toggleMenu}
-                            className="block py-2 px-4 rounded hover:bg-gray-700 transition"
-                        >
-                            <i className="fas fa-list mr-2"></i> Lista de Productos
-                        </Link>
-                    </>
-                ) : (
-                    <Link
-                        to="/login"
-                        onClick={toggleMenu}
-                        className="block py-2 px-4 rounded hover:bg-gray-700 transition"
-                    >
-                        <i className="fas fa-user mr-2"></i> Iniciar Sesión
-                    </Link>
-                )}
-            </nav>
         </div>
     );
 };
