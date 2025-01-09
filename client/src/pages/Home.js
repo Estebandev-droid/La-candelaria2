@@ -6,6 +6,8 @@ import Menu from '../components/Menu';
 import { Link } from 'react-router-dom';
 import { getProducts } from '../services/productService';
 import CategoryCarousel from '../components/CategoryCarousel';
+import { toast } from 'react-toastify';
+import { motion } from 'framer-motion';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -13,7 +15,6 @@ const Home = () => {
     const [newProducts, setNewProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [message, setMessage] = useState('');
     const { addToCart } = useContext(CartContext);
     const { user } = useContext(AuthContext);
 
@@ -25,7 +26,7 @@ const Home = () => {
                 setFeaturedProducts(products.filter(product => product.featured));
                 setNewProducts(products.filter(product => product.isNewProduct));
             } catch (error) {
-                setMessage('Error al obtener los productos');
+                toast.error('Error al obtener los productos');
             }
         };
 
@@ -42,17 +43,23 @@ const Home = () => {
 
     const handleAddToCart = (product) => {
         if (!user) {
-            setMessage('Debes estar logueado para agregar productos al carrito');
-            setTimeout(() => {
-                setMessage('');
-            }, 2000);
+            toast.error('Debes estar logueado para agregar productos al carrito');
             return;
         }
         addToCart(product, 1);
-        setMessage('Producto agregado al carrito');
-        setTimeout(() => {
-            setMessage('');
-        }, 2000); // Ocultar el mensaje después de 2 segundos
+        toast.success(
+            <div className="flex items-center space-x-2">
+                <span>Producto agregado al carrito</span>
+                <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-yellow-400"
+                >
+                    ⭐
+                </motion.div>
+            </div>
+        );
     };
 
     const filteredProducts = products.filter(product =>
@@ -65,110 +72,111 @@ const Home = () => {
             <Menu toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
             <main className={`container mx-auto p-6 mt-16 transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
-                <h1 className="text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 mb-8">
-                    Bienvenido a Mi Tienda
-                </h1>
-                <p className="mt-4 text-center text-lg text-gray-600 mb-8">
-                    Encuentra los mejores productos aquí.
-                </p>
-                {message && (
-                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300">
-                        {message}
+                <div className="bg-white bg-opacity-70 rounded-lg shadow-lg p-8">
+                    <h1 className="text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 mb-8 animate-fade-in">
+                        Bienvenido a Mi Tienda
+                    </h1>
+                    <p className="mt-4 text-center text-lg text-gray-600 mb-8 animate-fade-in-delay">
+                        Encuentra los mejores productos aquí.
+                    </p>
+
+                    {/* Barra de búsqueda */}
+                    <div className="flex justify-center mb-8">
+                        <div className="relative group w-1/2">
+                            <motion.input
+                                type="text"
+                                placeholder="Buscar productos..."
+                                className="w-full px-4 py-4 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-green-500 shadow-lg placeholder-gray-400 text-lg transition-transform duration-300"
+                                onChange={(e) => handleSearch(e.target.value)}
+                            />
+                            <motion.i
+                                className="fas fa-search absolute top-4 right-4 text-gray-400 cursor-pointer group-hover:text-green-500 text-2xl"
+                                initial={{ rotate: 0 }}
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 0.5 }}
+                            ></motion.i>
+                        </div>
                     </div>
-                )}
-                {/* Barra de búsqueda */}
-                <div className="container mx-auto mb-8">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            placeholder="Buscar productos..."
-                            className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500 shadow-md placeholder-gray-400"
-                            onChange={(e) => handleSearch(e.target.value)}
-                        />
-                        <i className="fas fa-search absolute top-3 right-4 text-gray-400"></i>
-                    </div>
-                </div>
 
-                {/* Carrusel de categorías */}
-                <CategoryCarousel />
+                    {/* Carrusel de categorías */}
+                    <CategoryCarousel />
 
-                {/* Espaciado adicional entre el carrusel y los productos */}
-                <div className="my-12"></div>
+                    {/* Espaciado adicional entre el carrusel y los productos */}
+                    <div className="my-12"></div>
 
-                {/* Productos destacados */}
-                <div className="container mx-auto mb-16">
-                    <h3 className="text-4xl font-bold mb-8 text-orange-700 text-center">Productos destacados</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {filteredProducts.length > 0 ? (
-                            filteredProducts.map((product) => (
-                                <div
-                                    key={product._id}
-                                    className="rounded-lg shadow-lg bg-orange-50 hover:scale-105 transition-transform overflow-hidden"
-                                >
-                                    <Link to={`/product/${product._id}`}>
-                                        <div className="w-full h-48 flex items-center justify-center overflow-hidden">
-                                            <img
-                                                src={`${process.env.REACT_APP_API_URL}/uploads/${product.image}`}
-                                                alt={product.name}
-                                                className="w-48 h-48 object-cover rounded-full hover:opacity-90 transition-transform duration-300"
-                                            />
-                                        </div>
-                                    </Link>
-                                    <div className="p-4">
-                                        <h2 className="text-xl font-semibold text-orange-700 text-center">{product.name}</h2>
-                                        <p className="text-gray-600 text-sm text-center">{product.description}</p>
-                                        <p className="text-lg font-bold text-orange-700 mt-2 text-center">${product.price}</p>
-                                        <div className="mt-4 flex justify-center">
+                    {/* Productos destacados */}
+                    <section>
+                        <h3 className="text-4xl font-bold mb-8 text-orange-700 text-center">Productos destacados</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {filteredProducts.length > 0 ? (
+                                filteredProducts.map((product) => (
+                                    <motion.div
+                                        key={product._id}
+                                        whileHover={{ scale: 1.05 }}
+                                        className="rounded-xl shadow-2xl bg-gradient-to-r from-yellow-400 to-orange-400 p-4 relative border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
+                                    >
+                                        <Link to={`/product/${product._id}`} className="block">
+                                            <div className="w-full h-48 flex items-center justify-center overflow-hidden">
+                                                <motion.img
+                                                    src={`${process.env.REACT_APP_API_URL}/uploads/${product.image}`}
+                                                    alt={product.name}
+                                                    className="w-48 h-48 object-cover rounded-full border-4 border-white shadow-md hover:scale-110 transition-transform duration-300"
+                                                />
+                                            </div>
+                                        </Link>
+                                        <div className="mt-4 text-center">
+                                            <h2 className="text-xl font-semibold text-gray-800 mb-2">{product.name}</h2>
+                                            <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+                                            <p className="text-lg font-bold text-gray-900 mb-4">${product.price}</p>
                                             <button
                                                 onClick={() => handleAddToCart(product)}
-                                                className="px-4 py-2 bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-medium rounded-lg hover:scale-105 transition-transform"
+                                                className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-medium rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-transform"
                                             >
                                                 Agregar al carrito
                                             </button>
                                         </div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-center text-gray-600">No se encontraron productos.</p>
-                        )}
-                    </div>
-                </div>
+                                    </motion.div>
+                                ))
+                            ) : (
+                                <p className="text-center text-gray-600">No se encontraron productos.</p>
+                            )}
+                        </div>
+                    </section>
 
-                {/* Nuevos productos */}
-                <div className="container mx-auto mb-8">
-                    <h3 className="text-4xl font-bold mb-8 text-orange-700 text-center">Nuevos productos</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {newProducts.map((product) => (
-                            <div
-                                key={product._id}
-                                className="rounded-lg shadow-lg bg-orange-50 hover:scale-105 transition-transform overflow-hidden"
-                            >
-                                <Link to={`/product/${product._id}`}>
-                                    <div className="w-full h-48 flex items-center justify-center overflow-hidden">
-                                        <img
-                                            src={`${process.env.REACT_APP_API_URL}/uploads/${product.image}`}
-                                            alt={product.name}
-                                            className="w-48 h-48 object-cover rounded-full hover:opacity-90 transition-transform duration-300"
-                                        />
-                                    </div>
-                                </Link>
-                                <div className="p-4">
-                                    <h2 className="text-xl font-semibold text-orange-700 text-center">{product.name}</h2>
-                                    <p className="text-gray-600 text-sm text-center">{product.description}</p>
-                                    <p className="text-lg font-bold text-orange-700 mt-2 text-center">${product.price}</p>
-                                    <div className="mt-4 flex justify-center">
+                    {/* Nuevos productos */}
+                    <section className="mt-16">
+                        <h3 className="text-4xl font-bold mb-8 text-orange-700 text-center">Nuevos productos</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {newProducts.map((product) => (
+                                <motion.div
+                                    key={product._id}
+                                    whileHover={{ scale: 1.05 }}
+                                    className="rounded-xl shadow-2xl bg-gradient-to-r from-yellow-400 to-orange-400 p-4 relative border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
+                                >
+                                    <Link to={`/product/${product._id}`} className="block">
+                                        <div className="w-full h-48 flex items-center justify-center overflow-hidden">
+                                            <motion.img
+                                                src={`${process.env.REACT_APP_API_URL}/uploads/${product.image}`}
+                                                alt={product.name}
+                                                className="w-48 h-48 object-cover rounded-full border-4 border-white shadow-md hover:scale-110 transition-transform duration-300"
+                                            />
+                                        </div>
+                                    </Link>
+                                    <div className="mt-4 text-center">
+                                        <h2 className="text-xl font-semibold text-gray-800 mb-2">{product.name}</h2>
+                                        <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+                                        <p className="text-lg font-bold text-gray-900 mb-4">${product.price}</p>
                                         <button
                                             onClick={() => handleAddToCart(product)}
-                                            className="px-4 py-2 bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-medium rounded-lg hover:scale-105 transition-transform"
+                                            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-medium rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-transform"
                                         >
                                             Agregar al carrito
                                         </button>
                                     </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </section>
                 </div>
 
                 {/* Botón flotante de WhatsApp */}
@@ -190,8 +198,8 @@ const Home = () => {
                 </Link>
 
                 {/* Footer */}
-                <footer className="mt-16 p-4 bg-gray-800 text-center">
-                    <div className="mt-4 text-center text-sm text-gray-500">&copy; 2025 Tu Tienda. Todos los derechos reservados.</div>
+                <footer className="mt-16 p-4 bg-gray-800 text-center text-gray-400 text-sm">
+                    &copy; 2025 Tu Tienda. Todos los derechos reservados.
                 </footer>
             </main>
         </div>

@@ -5,6 +5,7 @@ import Menu from '../components/Menu';
 import { getProductById, createProduct, updateProduct } from '../services/productService';
 import { AuthContext } from '../context/AuthContext';
 import { categoriesData } from '../data/categoriesData';
+import { toast } from 'react-toastify';
 
 const ProductForm = () => {
     const { id } = useParams();
@@ -46,7 +47,7 @@ const ProductForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isAuthenticated) {
-            setMessage('Debes estar logueado para crear un producto.');
+            toast.error('Debes estar logueado para crear un producto.');
             return;
         }
 
@@ -70,10 +71,10 @@ const ProductForm = () => {
 
             if (id) {
                 await updateProduct(id, productData);
-                setMessage('Producto actualizado con éxito.');
+                toast.success('Producto actualizado con éxito.');
             } else {
                 await createProduct(productData);
-                setMessage('Producto creado con éxito.');
+                toast.success('Producto creado con éxito.');
             }
             setTimeout(() => {
                 navigate('/product-list');
@@ -85,18 +86,18 @@ const ProductForm = () => {
                 // Check for detailed error messages from the server
                 const serverError = error.response.data;
                 if (serverError.details && Array.isArray(serverError.details)) {
-                    setMessage(serverError.details.map(detail => `${detail.field}: ${detail.message}`).join(', '));
+                    toast.error(serverError.details.map(detail => `${detail.field}: ${detail.message}`).join(', '));
                 } else if (serverError.message) {
-                    setMessage(serverError.message);
+                    toast.error(serverError.message);
                 } else {
-                    setMessage('Error al guardar el producto.'); // Fallback message
+                    toast.error('Error al guardar el producto.'); // Fallback message
                 }
             } else if (error.request) {
                 // The request was made but no response was received
-                setMessage('No se recibió respuesta del servidor.');
+                toast.error('No se recibió respuesta del servidor.');
             } else {
                 // Something happened in setting up the request that triggered an Error
-                setMessage('Error al configurar la solicitud.');
+                toast.error('Error al configurar la solicitud.');
             }
         }
     };

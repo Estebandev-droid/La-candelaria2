@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/userController');
+const { protect } = require('../middleware/authMiddleware');
 
 const userController = new UserController();
 
@@ -56,6 +57,8 @@ const userController = new UserController();
  *     responses:
  *       201:
  *         description: The user was successfully registered
+ *       400:
+ *         description: Username already in use
  *       500:
  *         description: Some server error
  */
@@ -82,5 +85,25 @@ router.post('/register', (req, res) => userController.registerUser(req, res));
  *         description: Some server error
  */
 router.post('/login', (req, res) => userController.loginUser(req, res));
+
+/**
+ * @swagger
+ * /api/users/me:
+ *   get:
+ *     summary: Get the authenticated user's information
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: The authenticated user's information
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Some server error
+ */
+router.get('/me', protect, (req, res) => userController.getMe(req, res));
 
 module.exports = router;

@@ -7,6 +7,7 @@ const path = require('path');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoutes'); // Asegúrate de importar las rutas de pedidos
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const { swaggerUi, specs } = require('./config/swagger');
 
@@ -27,6 +28,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // Rutas
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoutes); // Asegúrate de incluir las rutas de pedidos
 app.use('/api/inventory', inventoryRoutes);
 
 // Conexión a MongoDB

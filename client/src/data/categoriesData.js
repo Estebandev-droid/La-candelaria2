@@ -1,7 +1,9 @@
+import { faUtensils, faBroom, faHeart, faBaby, faPaw, faPlug, faTshirt, faGift } from '@fortawesome/free-solid-svg-icons';
+
 export const categoriesData = [
     {
         name: 'Alimentos y Bebidas',
-        icon: 'fa-utensils',
+        icon: faUtensils,
         subcategories: [
             'Frutas y Verduras',
             'Carnes y Pescados',
@@ -15,7 +17,7 @@ export const categoriesData = [
     },
     {
         name: 'Artículos de Limpieza y Hogar',
-        icon: 'fa-broom',
+        icon: faBroom,
         subcategories: [
             'Detergentes, desinfectantes, jabones para platos',
             'Productos para baño: papel higiénico, limpiadores, ambientadores',
@@ -24,7 +26,7 @@ export const categoriesData = [
     },
     {
         name: 'Higiene y Cuidado Personal',
-        icon: 'fa-heart',
+        icon: faHeart,
         subcategories: [
             'Champús, acondicionadores, jabones corporales',
             'Productos para el cuidado dental: pasta de dientes, cepillos, enjuagues bucales',
@@ -33,7 +35,7 @@ export const categoriesData = [
     },
     {
         name: 'Bebés y Niños',
-        icon: 'fa-baby',
+        icon: faBaby,
         subcategories: [
             'Pañales, toallitas húmedas',
             'Fórmulas infantiles, comida para bebés',
@@ -41,7 +43,7 @@ export const categoriesData = [
     },
     {
         name: 'Mascotas',
-        icon: 'fa-paw',
+        icon: faPaw,
         subcategories: [
             'Comida para perros y gatos',
             'Productos para cuidado de mascotas: shampoo, juguetes',
@@ -49,7 +51,7 @@ export const categoriesData = [
     },
     {
         name: 'Electrónica y Electrodomésticos Pequeños',
-        icon: 'fa-plug',
+        icon: faPlug,
         subcategories: [
             'Pilas, bombillos',
             'Electrodomésticos pequeños: licuadoras, cafeteras',
@@ -57,14 +59,14 @@ export const categoriesData = [
     },
     {
         name: 'Ropa y Accesorios',
-        icon: 'fa-tshirt',
+        icon: faTshirt,
         subcategories: [
             'Calcetines, camisetas básicas, ropa interior',
         ],
     },
     {
         name: 'Otros Productos',
-        icon: 'fa-gift',
+        icon: faGift,
         subcategories: [
             'Revistas, libros',
             'Juguetes, artículos para oficina',

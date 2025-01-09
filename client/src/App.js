@@ -9,6 +9,7 @@ import ProductList from './pages/ProductList';
 import EditProduct from './pages/EditProduct';
 import CategoryProducts from './pages/CategoryProducts';
 import Inventory from './pages/Inventory';
+import OrderHistory from './pages/OrderHistory';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/product-list" element={<ProductList />} />
           <Route path="/categories/:categoryName" element={<CategoryProducts />} />
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/order-history" element={<OrderHistory />} />
         </Routes>
       </div>
     </Router>

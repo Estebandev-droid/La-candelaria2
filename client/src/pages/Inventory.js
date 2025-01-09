@@ -7,6 +7,8 @@ import Menu from '../components/Menu';
 import { AuthContext } from '../context/AuthContext';
 import { categoriesData } from '../data/categoriesData';
 import Modal from 'react-modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { motion } from 'framer-motion';
 
 // Registrar los elementos de Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -17,6 +19,7 @@ const Inventory = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -67,7 +70,18 @@ const Inventory = () => {
     const closeModal = () => {
         setModalIsOpen(false);
         setSelectedCategory(null);
+        setSearchTerm('');
     };
+
+    const getCategoryIcon = (category) => {
+        const categoryData = categoriesData.find(cat => cat.name === category);
+        return categoryData ? categoryData.icon : null;
+    };
+
+    const filteredProducts = products.filter(product => 
+        product.category === selectedCategory && 
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-orange-100 via-yellow-100 to-orange-200 text-gray-800">
@@ -79,10 +93,18 @@ const Inventory = () => {
                 </h1>
                 <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {categoriesData.map((category) => (
-                        <div key={category.name} className="bg-white/10 backdrop-blur-lg p-6 rounded-lg shadow-lg cursor-pointer" onClick={() => openModal(category.name)}>
+                        <motion.div
+                            key={category.name}
+                            whileHover={{ scale: 1.05 }}
+                            className="rounded-xl shadow-2xl bg-gradient-to-r from-yellow-400 to-orange-400 p-4 relative border border-gray-200 overflow-hidden hover:shadow-lg transition-all cursor-pointer"
+                            onClick={() => openModal(category.name)}
+                        >
+                            <div className="flex justify-center mb-4">
+                                <FontAwesomeIcon icon={getCategoryIcon(category.name)} className="text-4xl text-orange-700" />
+                            </div>
                             <h2 className="text-2xl font-semibold text-center text-orange-700 mb-4">{category.name}</h2>
                             <Pie data={getCategoryData(category.name)} />
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
@@ -95,9 +117,20 @@ const Inventory = () => {
                 overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
             >
                 <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Productos de {selectedCategory}</h2>
+                <input
+                    type="text"
+                    placeholder="Buscar productos..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+                />
                 <ul className="space-y-4">
-                    {products.filter(product => product.category === selectedCategory).map((product) => (
-                        <li key={product._id} className="flex items-center justify-between bg-white/10 backdrop-blur-lg p-4 rounded-lg shadow-lg">
+                    {filteredProducts.map((product) => (
+                        <motion.div
+                            key={product._id}
+                            whileHover={{ scale: 1.05 }}
+                            className="flex items-center justify-between bg-gradient-to-r from-yellow-400 to-orange-400 p-4 rounded-lg shadow-lg overflow-hidden hover:shadow-lg transition-all"
+                        >
                             <div className="flex items-center space-x-4">
                                 <img src={`${process.env.REACT_APP_API_URL}/uploads/${product.image}`} alt={product.name} className="w-16 h-16 object-cover rounded-lg" />
                                 <div>
@@ -105,11 +138,14 @@ const Inventory = () => {
                                     <p className="text-gray-600 text-sm">Stock: {product.stock}</p>
                                 </div>
                             </div>
-                        </li>
+                        </motion.div>
                     ))}
                 </ul>
                 <div className="text-center mt-6">
-                    <button onClick={closeModal} className="px-4 py-2 bg-gradient-to-r from-red-400 to-green-400 text-white font-medium rounded-lg hover:scale-105 transition-transform">
+                    <button
+                        onClick={closeModal}
+                        className="px-4 py-2 bg-gradient-to-r from-red-400 to-green-400 text-white font-medium rounded-lg hover:scale-105 transition-transform duration-300"
+                    >
                         Cerrar
                     </button>
                 </div>

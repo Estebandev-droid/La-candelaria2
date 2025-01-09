@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import { categoriesData } from '../data/categoriesData';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -56,7 +57,7 @@ const CategoryCarousel = () => {
                             className="block bg-gray-800 p-8 rounded-full shadow-lg hover:scale-105 transition-transform"
                         >
                             <div className="flex flex-col items-center justify-center h-32 w-32 mx-auto">
-                                <i className={`fas ${category.icon} text-5xl text-green-400 mb-2`}></i>
+                                <FontAwesomeIcon icon={category.icon} className="text-5xl text-green-400 mb-2" />
                                 <h3 className="text-lg font-semibold text-green-400 text-center">{category.name}</h3>
                             </div>
                         </Link>
