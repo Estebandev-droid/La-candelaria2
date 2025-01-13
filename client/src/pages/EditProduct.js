@@ -13,10 +13,10 @@ const EditProduct = () => {
         name: '',
         description: '',
         price: '',
+        stock: 0,
         imageUrl: '',
-        featured: false,
-        isNewProduct: false,
     });
+    const [newStock, setNewStock] = useState(0);
     const [image, setImage] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [message, setMessage] = useState('');
@@ -39,10 +39,10 @@ const EditProduct = () => {
     }, [id]);
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
         setProduct((prevProduct) => ({
             ...prevProduct,
-            [name]: type === 'checkbox' ? checked : value,
+            [name]: value,
         }));
     };
 
@@ -50,10 +50,17 @@ const EditProduct = () => {
         setImage(e.target.files[0]);
     };
 
+    const handleStockChange = (e) => {
+        setNewStock(parseInt(e.target.value, 10));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const updatedProduct = { ...product, image };
+            const updatedProduct = { ...product, stock: product.stock + newStock };
+            if (image) {
+                updatedProduct.image = image;
+            }
             await updateProduct(id, updatedProduct);
             setMessage('Producto actualizado exitosamente');
             setTimeout(() => {
@@ -70,81 +77,89 @@ const EditProduct = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
+        <div className="min-h-screen bg-gradient-to-b from-orange-100 via-yellow-100 to-orange-200 text-gray-800">
             <Header toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
             <Menu toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
             <main className={`container mx-auto p-6 mt-16 transition-all duration-300 ${isMenuOpen ? 'ml-64' : ''}`}>
-                <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-green-400 to-yellow-400">
+                <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500">
                     Editar Producto
                 </h1>
                 {message && <p className="text-center text-green-500">{message}</p>}
                 <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Nombre</label>
+                        <label className="block text-sm font-medium text-gray-800">Nombre</label>
                         <input
                             type="text"
                             name="name"
                             value={product.name}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
+                            className="w-full px-4 py-2 rounded-lg bg-white text-gray-800 focus:ring-2 focus:ring-orange-400"
                             required
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Descripción</label>
+                        <label className="block text-sm font-medium text-gray-800">Descripción</label>
                         <textarea
                             name="description"
                             value={product.description}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
+                            className="w-full px-4 py-2 rounded-lg bg-white text-gray-800 focus:ring-2 focus:ring-orange-400"
                             required
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Precio</label>
+                        <label className="block text-sm font-medium text-gray-800">Precio</label>
                         <input
                             type="number"
                             name="price"
                             value={product.price}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
+                            className="w-full px-4 py-2 rounded-lg bg-white text-gray-800 focus:ring-2 focus:ring-orange-400"
                             required
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Imagen</label>
+                        <label className="block text-sm font-medium text-gray-800">Stock Actual</label>
+                        <input
+                            type="number"
+                            name="stock"
+                            value={product.stock}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 rounded-lg bg-white text-gray-800 focus:ring-2 focus:ring-orange-400"
+                            disabled
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-800">Unidades Nuevas</label>
+                        <input
+                            type="number"
+                            name="newStock"
+                            value={newStock}
+                            onChange={handleStockChange}
+                            className="w-full px-4 py-2 rounded-lg bg-white text-gray-800 focus:ring-2 focus:ring-orange-400"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-800">Imagen</label>
                         <input
                             type="file"
                             name="image"
                             onChange={handleImageChange}
-                            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-green-500"
+                            className="w-full px-4 py-2 rounded-lg bg-white text-gray-800 focus:ring-2 focus:ring-orange-400"
                             accept="image/*"
                         />
-                    </div>
-                    <div className="flex items-center">
-                        <input
-                            type="checkbox"
-                            name="featured"
-                            checked={product.featured}
-                            onChange={handleChange}
-                            className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                        />
-                        <label className="ml-2 block text-sm text-gray-300">Destacado</label>
-                    </div>
-                    <div className="flex items-center">
-                        <input
-                            type="checkbox"
-                            name="isNewProduct"
-                            checked={product.isNewProduct}
-                            onChange={handleChange}
-                            className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                        />
-                        <label className="ml-2 block text-sm text-gray-300">Nuevo</label>
+                        {product.imageUrl && (
+                            <img
+                                src={`${process.env.REACT_APP_API_URL}/uploads/${product.imageUrl}`}
+                                alt={product.name}
+                                className="w-32 h-32 object-cover mt-4"
+                            />
+                        )}
                     </div>
                     <div>
                         <button
                             type="submit"
-                            className="w-full px-4 py-2 bg-gradient-to-r from-red-500 to-green-500 rounded-lg font-medium hover:opacity-90 transition"
+                            className="w-full px-4 py-2 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-lg font-medium hover:opacity-90 transition"
                         >
                             Actualizar Producto
                         </button>

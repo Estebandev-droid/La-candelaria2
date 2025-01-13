@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const asyncHandler = require('express-async-handler');
 
-const protect = async (req, res, next) => {
+const protect = asyncHandler(async (req, res, next) => {
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -11,13 +12,16 @@ const protect = async (req, res, next) => {
             req.user = await User.findById(decoded.id).select('-password');
             next();
         } catch (error) {
-            res.status(401).json({ message: 'No autorizado, token fallido' });
+            console.error(error);
+            res.status(401);
+            throw new Error('No autorizado, token fallido');
         }
     }
 
     if (!token) {
-        res.status(401).json({ message: 'No autorizado, no hay token' });
+        res.status(401);
+        throw new Error('No autorizado, no hay token');
     }
-};
+});
 
 module.exports = { protect };

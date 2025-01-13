@@ -29,14 +29,14 @@ class UserController {
         try {
             const user = await this.User.findOne({ username });
             if (!user) {
-                return res.status(401).json({ message: 'Credenciales inválidas' });
+                return res.status(400).json({ message: 'Usuario no encontrado' });
             }
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
-                return res.status(401).json({ message: 'Credenciales inválidas' });
+                return res.status(400).json({ message: 'Contraseña incorrecta' });
             }
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.status(200).json({ token });
+            res.status(200).json({ token, user });
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
             res.status(500).json({ message: 'Error al iniciar sesión', error: error.message });
@@ -53,6 +53,27 @@ class UserController {
         } catch (error) {
             console.error('Error al obtener el usuario:', error);
             res.status(500).json({ message: 'Error al obtener el usuario', error: error.message });
+        }
+    }
+
+    async updateProfile(req, res) {
+        const { name, email, address, city, postalCode, country } = req.body;
+        try {
+            const user = await this.User.findById(req.user.id);
+            if (!user) {
+                return res.status(404).json({ message: 'Usuario no encontrado' });
+            }
+            user.name = name || user.name;
+            user.email = email || user.email;
+            user.address = address || user.address;
+            user.city = city || user.city;
+            user.postalCode = postalCode || user.postalCode;
+            user.country = country || user.country;
+            await user.save();
+            res.status(200).json(user);
+        } catch (error) {
+            console.error('Error al actualizar el perfil del usuario:', error);
+            res.status(500).json({ message: 'Error al actualizar el perfil del usuario', error: error.message });
         }
     }
 }

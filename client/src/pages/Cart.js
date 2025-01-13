@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Menu from '../components/Menu';
 import Checkout from '../components/Checkout';
 import axios from 'axios';
-import { motion } from 'framer-motion'; // Importa motion de framer-motion
+import { motion } from 'framer-motion';
 
 const Cart = () => {
     const { cart, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
@@ -87,23 +87,23 @@ const Cart = () => {
                                     <motion.div
                                         key={item.product._id}
                                         whileHover={{ scale: 1.05 }}
-                                        className="rounded-xl shadow-2xl bg-gradient-to-r from-yellow-400 to-orange-400 p-4 relative border border-gray-200 overflow-hidden hover:shadow-lg transition-all bg-opacity-40"
+                                        className="rounded-xl shadow-lg bg-gradient-to-r from-yellow-400 to-orange-400 p-6 relative border border-gray-300 overflow-hidden hover:shadow-xl transition-transform"
                                     >
-                                        <img src={`${process.env.REACT_APP_API_URL}/uploads/${item.product.image}`} alt={item.product.name} className="w-full h-32 object-cover rounded-lg mb-4" />
-                                        <h2 className="text-2xl font-bold text-green-400">{item.product.name}</h2>
-                                        <p className="text-gray-300">{item.product.description}</p>
-                                        <p className="text-lg font-bold text-green-400 mt-2">${item.product.price}</p>
+                                        <img src={`${process.env.REACT_APP_API_URL}/uploads/${item.product.image}`} alt={item.product.name} className="w-full h-40 object-cover rounded-lg mb-4" />
+                                        <h2 className="text-xl font-bold text-gray-800">{item.product.name}</h2>
+                                        <p className="text-sm text-gray-600 mt-2">{item.product.description}</p>
+                                        <p className="text-lg font-bold text-green-600 mt-2">${item.product.price}</p>
                                         <div className="flex items-center mt-4">
                                             <input
                                                 type="number"
                                                 min="1"
                                                 value={item.quantity}
                                                 onChange={(e) => handleQuantityChange(item.product._id, parseInt(e.target.value))}
-                                                className="w-16 p-2 rounded-lg bg-orange-50 text-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                                                className="w-16 p-2 rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-400"
                                             />
                                             <button
                                                 onClick={() => removeFromCart(item.product._id)}
-                                                className="ml-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:opacity-90 transition"
+                                                className="ml-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:scale-105 transition-transform"
                                             >
                                                 Eliminar
                                             </button>
@@ -112,10 +112,10 @@ const Cart = () => {
                                 ))}
                             </div>
                             <div className="mt-10 text-center">
-                                <p className="text-lg font-bold text-gray-600">Total: ${calculateTotal()}</p>
+                                <p className="text-lg font-bold text-gray-700">Total: ${calculateTotal()}</p>
                                 <button
                                     onClick={handleCheckout}
-                                    className="mt-4 px-4 py-2 bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-bold rounded-lg hover:scale-105 transition-transform"
+                                    className="mt-4 px-6 py-3 bg-gradient-to-r from-orange-400 to-yellow-500 text-white font-semibold rounded-lg hover:scale-110 transition-transform"
                                 >
                                     Proceder al Pago
                                 </button>

@@ -7,8 +7,10 @@ const path = require('path');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
-const orderRoutes = require('./routes/orderRoutes'); // Asegúrate de importar las rutas de pedidos
+const orderRoutes = require('./routes/orderRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const statsRoutes = require('./routes/statsRoutes'); // Asegúrate de importar las rutas de estadísticas
 const { swaggerUi, specs } = require('./config/swagger');
 
 dotenv.config();
@@ -21,6 +23,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos estáticos
+app.use(express.json());
 
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
@@ -28,8 +31,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // Rutas
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/orders', orderRoutes); // Asegúrate de incluir las rutas de pedidos
+app.use('/api/orders', orderRoutes);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/stats', statsRoutes); // Incluir las rutas de estadísticas
 
 // Conexión a MongoDB
 connectDB();

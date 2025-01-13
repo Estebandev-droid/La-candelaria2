@@ -5,31 +5,31 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
 
-    const addToCart = (product, quantity) => {
-        const existingProduct = cart.find((item) => item.product._id === product._id);
-        if (existingProduct) {
-            setCart(
-                cart.map((item) =>
+    const addToCart = (product) => {
+        setCart((prevCart) => {
+            const existingProduct = prevCart.find((item) => item.product._id === product._id);
+            if (existingProduct) {
+                return prevCart.map((item) =>
                     item.product._id === product._id
-                        ? { ...item, quantity: item.quantity + quantity }
+                        ? { ...item, quantity: item.quantity + 1 }
                         : item
-                )
-            );
-        } else {
-            setCart([...cart, { product, quantity }]);
-        }
+                );
+            } else {
+                return [...prevCart, { product, quantity: 1 }];
+            }
+        });
     };
 
     const removeFromCart = (productId) => {
-        setCart(cart.filter((item) => item.product._id !== productId));
+        setCart((prevCart) => prevCart.filter((item) => item.product._id !== productId));
     };
 
     const updateQuantity = (productId, quantity) => {
-        setCart(cart.map((item) =>
-            item.product._id === productId
-                ? { ...item, quantity }
-                : item
-        ));
+        setCart((prevCart) =>
+            prevCart.map((item) =>
+                item.product._id === productId ? { ...item, quantity } : item
+            )
+        );
     };
 
     const clearCart = () => {

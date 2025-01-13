@@ -2,12 +2,12 @@ import axios from 'axios';
 
 const API_URL = `${process.env.REACT_APP_API_URL}/api/orders`;
 
-const createOrder = async (orderData, token) => {
+export const createOrder = async (orderData, token) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        }
+            Authorization: `Bearer ${token}`,
+        },
     };
 
     const response = await axios.post(API_URL, orderData, config);
@@ -36,4 +36,4 @@ const getOrderById = async (id, token) => {
     return response.data;
 };
 
-export { createOrder, getMyOrders, getOrderById };
+export { getMyOrders, getOrderById };

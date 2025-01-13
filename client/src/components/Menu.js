@@ -54,6 +54,18 @@ const Menu = ({ toggleMenu, isMenuOpen }) => {
                                         <span>Historial de Pedidos</span>
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link to="/sales-stats" className="flex items-center space-x-3 hover:text-yellow-500">
+                                        <i className="fas fa-chart-line"></i>
+                                        <span>Estadísticas de Ventas</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/profile" className="flex items-center space-x-3 hover:text-yellow-500">
+                                        <i className="fas fa-user"></i>
+                                        <span>Perfil</span>
+                                    </Link>
+                                </li>
                             </>
                         )}
                         <li>

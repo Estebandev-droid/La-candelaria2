@@ -106,4 +106,6 @@ router.post('/login', (req, res) => userController.loginUser(req, res));
  */
 router.get('/me', protect, (req, res) => userController.getMe(req, res));
 
+router.put('/profile', protect, (req, res) => userController.updateProfile(req, res));
+
 module.exports = router;
